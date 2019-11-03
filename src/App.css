@@ -20,3 +20,11 @@
 .App-link {
   color: #09d3ac;
 }
+
+body {
+  background-color: #1E2234 !important;
+}
+
+.no-padding {
+  padding: 0 !important;
+}
