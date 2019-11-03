@@ -2,6 +2,11 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import Background from "./components/Background";
 import Error from "./components/Error";
+import InputContainer from "./components/InputContainer";
+import Input from "./components/Input";
+import PlaystationSVG from "./components/PlaystationSVG";
+import WindowsSVG from "./components/WindowsSVG";
+import XboxSVG from "./components/XboxSVG";
 import Pathfinder from "./images/pathfinder.jpg";
 
 function App() {
@@ -13,6 +18,8 @@ function App() {
   const [bg, setBg] = useState(Pathfinder);
   const [data, setData] = useState();
   const [error, setError] = useState("none");
+  const [darkness, setDarkness] = useState("170, 47, 43, 80%");
+  const [iconDark, setIconDark] = useState("#CAD0E3");
 
   function getData(captureValue) {
     console.log(captureValue);
@@ -28,7 +35,8 @@ function App() {
         const filterUndefined = filterSeasonWins.filter(
           x => x.stats.kills !== undefined
         );
-        // filterUndefined.map(x => console.log(x));
+
+        filterUndefined.map(x => console.log(x));
 
         const sortedByKills = filterUndefined.sort(compare);
 
@@ -36,10 +44,11 @@ function App() {
         setError("none");
         setData(resJson.data);
         setBg(sortedByKills[1].metadata.bgImageUrl);
-      }).catch(function() {
+      })
+      .catch(function() {
         console.log("error");
         setError("block");
-    });;
+      });
   }
 
   // useEffect(() => {
@@ -52,19 +61,72 @@ function App() {
     }
   };
 
+  const darkenBackground = () => {
+    setDarkness("226,59,46, 100%");
+  };
 
+  const lightenBackground = () => {
+    setDarkness("170, 47, 43, 80%");
+  };
+
+  const darkenIcon = () => {
+    setIconDark("#98A0BA");
+  };
+
+  const lightenIcon = () => {
+    setIconDark("#CAD0E3");
+  }
 
   return (
     <Background bgData={bg}>
-      <p>FIND YOUR APEX LEGENDS STATS</p>
-      <input
-        type="text"
-        placeholder="Search For Profile..."
-        onKeyDown={captureValue}
-      ></input>
-      <Error toggleDisplay={error}>
-        <p>Sorry. Player nickname does not exist. Please check the nickname, platform and try again.</p>
-      </Error>
+      <div className="container">
+        <div className="row">
+          <InputContainer darkness={darkness}>
+            <div className="search_wrapper">
+              <div className="col-sm-4 no-padding">
+                <p>CHECK PLAYER RANK AND STATS</p>
+              </div>
+              <div className="col-sm-6 no-padding">
+                <Input>
+                  <div className="container">
+                    <div className="row">
+                      <div className="col-sm-2 no-padding svg-wrapper">
+                        <div className="icon-container" >
+                          <WindowsSVG fill={iconDark}></WindowsSVG>
+                        </div>
+                        <div className="icon-container" >
+                          <PlaystationSVG fill={iconDark}></PlaystationSVG>
+                        </div>
+                        <div className="icon-container" >
+                          <XboxSVG fill={iconDark}></XboxSVG>
+                        </div>
+                      </div>
+                      <div className="col-sm-10 no-padding">
+                        <input
+                          type="text"
+                          placeholder="Apex Username"
+                          onKeyDown={captureValue}
+                          onFocus={darkenBackground}
+                          onBlur={lightenBackground}
+                        ></input>
+                      </div>
+                    </div>
+                  </div>
+                </Input>
+              </div>
+              <div className="col-sm-2">
+                <button>Search</button>
+              </div>
+            </div>
+          </InputContainer>
+          <Error toggleDisplay={error}>
+            <p>
+              Sorry. Player nickname does not exist. Please check the nickname,
+              platform and try again.
+            </p>
+          </Error>
+        </div>
+      </div>
     </Background>
   );
 }
