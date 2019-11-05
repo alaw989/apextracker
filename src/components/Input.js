@@ -13,11 +13,17 @@ const Input = styled.div`
     justify-content: space-around;
     align-items: center;
 
-    .icon-container {
+    .icon-container div {
       display: flex;
       justify-content: center;
       align-items: center;
       transition: 1s;
+    }
+
+    .icon-container.active div {
+        svg path {
+        fill: #D33134;
+      }
     }
 
     .icon-container:hover {

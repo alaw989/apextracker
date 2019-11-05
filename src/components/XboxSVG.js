@@ -1,24 +1,17 @@
 import React from "react";
 
-const XboxSVG = ({
-  style = {},
-  fill = "#CAD0E3",
-  width = "20",
-  className = "",
-  height = "20",
-  viewBox = "0 0 26 26"
-}) => (
+const XboxSVG = props => (
   <svg
-    width={width}
-    style={style}
-    height={height}
-    viewBox={viewBox}
-    className={className}
+    width="20"
+    
+    height="20"
+    viewBox="0 0 26 26"
+  
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
   >
     <path
-     fill="#CAD0E3"
+     fill={props.fill}
       d="M5.733,2.183C5.72,2.193,5.71,2.204,5.698,2.214c0.073-0.077,0.178-0.16,0.247-0.205
 		C7.959,0.7,10.286,0,12.868,0c2.415,0,4.677,0.667,6.608,1.827c0.14,0.083,0.522,0.345,0.719,0.583v0.001
 		c-1.863-2.054-7.339,2.353-7.339,2.353c-1.894-1.46-3.636-2.455-4.933-2.809C6.839,1.658,6.089,1.906,5.733,2.183z M22.305,4.125
