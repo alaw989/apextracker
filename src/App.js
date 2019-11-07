@@ -11,13 +11,28 @@ function App() {
   const myHeaders = new Headers();
   myHeaders.append("TRN-Api-Key", "05e6eb8f-3e95-4fbb-a2b5-b0f4dbb124c9");
 
-  const proxy_url = "https://fathomless-mesa-94824.herokuapp.com/";
-  const url = "https://public-api.tracker.gg/v2/apex/standard/profile/5";
+  const [iconIndex, setIconIndex] = useState({
+    active: 0,
+    platformCode: null
+  });
+
+  const [platformCode, setplatformCode] = useState(null);
   const [bg, setBg] = useState(Pathfinder);
   const [data, setData] = useState();
   const [error, setError] = useState("none");
   const [darkness, setDarkness] = useState("170, 47, 43, 80%");
+  const [count, setCount] = useState(0);
+  const [legendStats, setlegendStats] = useState({
+    name: ""
+  });
 
+  const proxy_url = "https://fathomless-mesa-94824.herokuapp.com/";
+  const apiUrlWithCode =
+    "https://public-api.tracker.gg/v2/apex/standard/profile/" +
+    platformCode +
+    "/";
+
+  const url = proxy_url + apiUrlWithCode;
   const icons = [
     <svg
       width="20"
@@ -70,8 +85,7 @@ function App() {
   ];
 
   function getData(captureValue) {
-    console.log(captureValue);
-    fetch(proxy_url + url + "/" + captureValue, {
+    fetch(url + captureValue, {
       method: "GET",
       headers: myHeaders
     })
@@ -83,12 +97,15 @@ function App() {
         const filterUndefined = filterSeasonWins.filter(
           x => x.stats.kills !== undefined
         );
-
-        filterUndefined.map(x => console.log(x));
-
+        // filterUndefined.map(x => console.log(x));
+          
         const sortedByKills = filterUndefined.sort(compare);
 
-        console.log(sortedByKills[1].metadata.bgImageUrl);
+        console.log(resJson.data);
+        setlegendStats({
+          name: resJson.data.platformInfo.platformUserHandle,
+          iconUrl: resJson.data.segments[0].stats.rankScore.metadata.iconUrl
+        })
         setError("none");
         setData(resJson.data);
         setBg(sortedByKills[1].metadata.bgImageUrl);
@@ -103,29 +120,25 @@ function App() {
   //   getData();
   // }, []);
 
-  const captureValue = e => {
-    if (e.key === "Enter") {
-      getData(e.target.value);
-    }
-  };
-
-  const darkenBackground = () => {
-    setDarkness("226,59,46, 100%");
-  };
-
-  const lightenBackground = () => {
-    setDarkness("170, 47, 43, 80%");
-  };
-
-  const [iconIndex, setIconIndex] = useState({
-    active: null
-  });
+  const captureValue = e =>
+    e.key === "Enter" ? getData(e.target.value) : null;
+  const darkenBackground = () => setDarkness("226,59,46, 100%");
+  const lightenBackground = () => setDarkness("170, 47, 43, 80%");
 
   const selectIcon = index => {
+    setCount(count + 1);
+    console.log(count);
     setIconIndex({
       active: index
     });
-    console.log(iconIndex.active);
+    console.log("index:", index);
+    index === 1
+      ? setplatformCode(5)
+      : index === 0
+      ? setplatformCode(1)
+      : index === 2
+      ? setplatformCode(2)
+      : console.log(iconIndex.active);
   };
 
   return (
@@ -180,6 +193,8 @@ function App() {
               platform and try again.
             </p>
           </Error>
+          <h1 className="">{legendStats.name}</h1>
+          <img alt="" src={legendStats.iconUrl} />
         </div>
       </div>
     </Background>
