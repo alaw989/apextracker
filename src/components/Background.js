@@ -1,18 +1,80 @@
-
 import styled from "styled-components";
+import { backgrounds } from "../utils.js";
 
-const Background = styled.div.attrs(props => ({
-  darkness: props.darkness,
-  bgData: props.bgData
-}))`
-  background-image: url(${props => props.bgData});
+const Background = styled.div`
+  background-image: url(${props =>
+    props.bgData === "Pathfinder"
+      ? backgrounds.pathfinder
+      : props =>
+          props.bgData === "Bangalore"
+            ? backgrounds.bangalore
+            : props =>
+                props.bgData === "Bloodhound"
+                  ? backgrounds.bloodhound
+                  : props =>
+                      props.bgData === "Caustic"
+                        ? backgrounds.caustic
+                        : props =>
+                            props.bgData === "Crypto"
+                              ? backgrounds.crypto
+                              : props =>
+                                  props.bgData === "Gibraltar"
+                                    ? backgrounds.gibraltar
+                                    : props =>
+                                        props.bgData === "Lifeline"
+                                          ? backgrounds.lifeline
+                                          : props =>
+                                              props.bgData === "Mirage"
+                                                ? backgrounds.mirage
+                                                : props =>
+                                                    props.bgData === "Wraith"
+                                                      ? backgrounds.wraith
+                                                      : props =>
+                                                          props.bgData ===
+                                                          "Octane"
+                                                            ? backgrounds.octane
+                                                            : null});
   background: 
     /* top, transparent red, faked with gradient */ linear-gradient(
       0deg,
       rgba(30, 35, 52, 1) 0%,
-      rgba(253, 187, 45, 0) 100%
+      rgba(30, 35, 52, 0) 50%,
+      rgba(30, 35, 52, 1) 100%
     ),
-    /* bottom, image */ url(${props => props.bgData});
+    /* bottom, image */
+      url(${props =>
+        props.bgData === "Pathfinder"
+          ? backgrounds.pathfinder
+          : props =>
+              props.bgData === "Bangalore"
+                ? backgrounds.bangalore
+                : props =>
+                    props.bgData === "Bloodhound"
+                      ? backgrounds.bloodhound
+                      : props =>
+                          props.bgData === "Caustic"
+                            ? backgrounds.caustic
+                            : props =>
+                                props.bgData === "Crypto"
+                                  ? backgrounds.crypto
+                                  : props =>
+                                      props.bgData === "Gibraltar"
+                                        ? backgrounds.gibraltar
+                                        : props =>
+                                            props.bgData === "Lifeline"
+                                              ? backgrounds.lifeline
+                                              : props =>
+                                                  props.bgData === "Mirage"
+                                                    ? backgrounds.mirage
+                                                    : props =>
+                                                        props.bgData ===
+                                                        "Wraith"
+                                                          ? backgrounds.wraith
+                                                          : props =>
+                                                              props.bgData ===
+                                                              "Octane"
+                                                                ? backgrounds.octane
+                                                                : null});
   padding: 65px 0 275px 0;
   display: flex;
   justify-content: flex-start;

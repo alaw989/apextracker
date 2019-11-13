@@ -4,8 +4,10 @@ import Background from "./components/Background";
 import Error from "./components/Error";
 import InputContainer from "./components/InputContainer";
 import Input from "./components/Input";
+import UserInfoBlock from "./components/UserInfoBlock";
 import PlatformIcons from "./components/PlatformIcons";
-import Pathfinder from "./images/pathfinder.jpg";
+
+
 
 function App() {
   const myHeaders = new Headers();
@@ -17,13 +19,15 @@ function App() {
   });
 
   const [platformCode, setplatformCode] = useState(null);
-  const [bg, setBg] = useState(Pathfinder);
+  const [bg, setBg] = useState("Pathfinder");
   const [data, setData] = useState();
   const [error, setError] = useState("none");
   const [darkness, setDarkness] = useState("170, 47, 43, 80%");
   const [count, setCount] = useState(0);
   const [legendStats, setlegendStats] = useState({
-    name: ""
+    name: "",
+    iconUrl: "",
+    avatar: ""
   });
 
   const proxy_url = "https://fathomless-mesa-94824.herokuapp.com/";
@@ -98,17 +102,20 @@ function App() {
           x => x.stats.kills !== undefined
         );
         // filterUndefined.map(x => console.log(x));
-          
+
         const sortedByKills = filterUndefined.sort(compare);
 
-        console.log(resJson.data);
+        // console.log(resJson.data);
         setlegendStats({
           name: resJson.data.platformInfo.platformUserHandle,
-          iconUrl: resJson.data.segments[0].stats.rankScore.metadata.iconUrl
-        })
+          iconUrl: resJson.data.segments[0].stats.rankScore.metadata.iconUrl,
+          avatar: resJson.data.platformInfo.avatarUrl,
+          platformCode: platformCode
+        });
         setError("none");
         setData(resJson.data);
-        setBg(sortedByKills[1].metadata.bgImageUrl);
+        console.log(sortedByKills[1].metadata.name);
+        setBg(sortedByKills[1].metadata.name);
       })
       .catch(function() {
         console.log("error");
@@ -120,18 +127,21 @@ function App() {
   //   getData();
   // }, []);
 
-  const captureValue = e =>
-    e.key === "Enter" ? getData(e.target.value) : null;
+  const captureValue = e => {
+    return e.key === "Enter" ? getData(e.target.value) && e.target.value === "" : null;
+  }
+
+
   const darkenBackground = () => setDarkness("226,59,46, 100%");
   const lightenBackground = () => setDarkness("170, 47, 43, 80%");
 
   const selectIcon = index => {
     setCount(count + 1);
-    console.log(count);
+    // console.log(count);
     setIconIndex({
       active: index
     });
-    console.log("index:", index);
+    // console.log("index:", index);
     index === 1
       ? setplatformCode(5)
       : index === 0
@@ -193,8 +203,7 @@ function App() {
               platform and try again.
             </p>
           </Error>
-          <h1 className="">{legendStats.name}</h1>
-          <img alt="" src={legendStats.iconUrl} />
+          <UserInfoBlock userinfo={legendStats}></UserInfoBlock>
         </div>
       </div>
     </Background>
