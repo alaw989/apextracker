@@ -1,39 +1,11 @@
 import styled from "styled-components";
 import { backgrounds } from "../utils.js";
 
+
+
 const Background = styled.div`
-  background-image: url(${props =>
-    props.bgData === "Pathfinder"
-      ? backgrounds.pathfinder
-      : props =>
-          props.bgData === "Bangalore"
-            ? backgrounds.bangalore
-            : props =>
-                props.bgData === "Bloodhound"
-                  ? backgrounds.bloodhound
-                  : props =>
-                      props.bgData === "Caustic"
-                        ? backgrounds.caustic
-                        : props =>
-                            props.bgData === "Crypto"
-                              ? backgrounds.crypto
-                              : props =>
-                                  props.bgData === "Gibraltar"
-                                    ? backgrounds.gibraltar
-                                    : props =>
-                                        props.bgData === "Lifeline"
-                                          ? backgrounds.lifeline
-                                          : props =>
-                                              props.bgData === "Mirage"
-                                                ? backgrounds.mirage
-                                                : props =>
-                                                    props.bgData === "Wraith"
-                                                      ? backgrounds.wraith
-                                                      : props =>
-                                                          props.bgData ===
-                                                          "Octane"
-                                                            ? backgrounds.octane
-                                                            : null});
+${props => props.bgData};
+  background-image: url(${props => props.bgData});
   background: 
     /* top, transparent red, faked with gradient */ linear-gradient(
       0deg,
@@ -42,45 +14,14 @@ const Background = styled.div`
       rgba(30, 35, 52, 1) 100%
     ),
     /* bottom, image */
-      url(${props =>
-        props.bgData === "Pathfinder"
-          ? backgrounds.pathfinder
-          : props =>
-              props.bgData === "Bangalore"
-                ? backgrounds.bangalore
-                : props =>
-                    props.bgData === "Bloodhound"
-                      ? backgrounds.bloodhound
-                      : props =>
-                          props.bgData === "Caustic"
-                            ? backgrounds.caustic
-                            : props =>
-                                props.bgData === "Crypto"
-                                  ? backgrounds.crypto
-                                  : props =>
-                                      props.bgData === "Gibraltar"
-                                        ? backgrounds.gibraltar
-                                        : props =>
-                                            props.bgData === "Lifeline"
-                                              ? backgrounds.lifeline
-                                              : props =>
-                                                  props.bgData === "Mirage"
-                                                    ? backgrounds.mirage
-                                                    : props =>
-                                                        props.bgData ===
-                                                        "Wraith"
-                                                          ? backgrounds.wraith
-                                                          : props =>
-                                                              props.bgData ===
-                                                              "Octane"
-                                                                ? backgrounds.octane
-                                                                : null});
+      url(${props => props.bgData});
   padding: 65px 0 275px 0;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
   align-items: center;
-  background-size: cover;
+  background-position: center; 
+  background-repeat: no-repeat;
 
   button {
     background: none;
@@ -114,10 +55,12 @@ const Background = styled.div`
     button {
       width: 100%;
     }
-
-    button:hover {
-      background-color: blue;
-    }
+  }
+  .separator {
+    height: 10px;
+    width: 100%;
+    background-color: #24283C;
+ 
   }
 `;
 
