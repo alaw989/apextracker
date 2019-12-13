@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Background from "./components/Background";
 import Error from "./components/Error";
 import InputContainer from "./components/InputContainer";
 import Input from "./components/Input";
+import SearchButton from "./components/SearchButton";
 import UserInfoBlock from "./components/UserInfoBlock";
 import PlatformIcons from "./components/PlatformIcons";
-
-
+import StatCard from "./components/StatCard";
+import { backgrounds, compare } from "./utils.js";
+import { isTemplateElement } from "@babel/types";
 
 function App() {
   const myHeaders = new Headers();
@@ -18,18 +20,22 @@ function App() {
     platformCode: null
   });
 
+  const [loading, setLoading] = useState(false);
   const [platformCode, setplatformCode] = useState(null);
-  const [bg, setBg] = useState("Pathfinder");
+  const [bg, setBg] = useState(backgrounds.Pathfinder);
   const [data, setData] = useState();
   const [error, setError] = useState("none");
   const [darkness, setDarkness] = useState("170, 47, 43, 80%");
   const [count, setCount] = useState(0);
+
   const [legendStats, setlegendStats] = useState({
     name: "",
     iconUrl: "",
     avatar: ""
   });
 
+  const [playerStats, setplayerStats] = useState([]);
+  console.log("players stats:", playerStats);
   const proxy_url = "https://fathomless-mesa-94824.herokuapp.com/";
   const apiUrlWithCode =
     "https://public-api.tracker.gg/v2/apex/standard/profile/" +
@@ -89,6 +95,7 @@ function App() {
   ];
 
   function getData(captureValue) {
+    setLoading(true);
     fetch(url + captureValue, {
       method: "GET",
       headers: myHeaders
@@ -101,11 +108,37 @@ function App() {
         const filterUndefined = filterSeasonWins.filter(
           x => x.stats.kills !== undefined
         );
-        // filterUndefined.map(x => console.log(x));
 
         const sortedByKills = filterUndefined.sort(compare);
 
-        // console.log(resJson.data);
+        const prefix = resJson.data.segments[0];
+        console.log("Prefix:", prefix);
+        // console.log(prefix.stats.level.value);
+
+        let stats = [];
+
+        for (let prop in prefix.stats) {
+          console.log("---", prop);
+
+          let stat = prefix.stats[prop];
+
+          if (typeof stat === "object" && stat.displayName) {
+            let item = {
+              // title: "?",
+              subtitle: stat.displayName,
+              stat: stat.value
+            };
+
+            stats.push(item);
+          }
+        }
+
+        console.log("---", stats);
+
+        setplayerStats(stats);
+
+        // console.log("Player Stats:", playerStats);
+
         setlegendStats({
           name: resJson.data.platformInfo.platformUserHandle,
           iconUrl: resJson.data.segments[0].stats.rankScore.metadata.iconUrl,
@@ -114,12 +147,41 @@ function App() {
         });
         setError("none");
         setData(resJson.data);
-        console.log(sortedByKills[1].metadata.name);
-        setBg(sortedByKills[1].metadata.name);
+        // console.log(sortedByKills[1].metadata.name);
+        const legendName = sortedByKills[1].metadata.name;
+
+        const bgSwitch = state => {
+          switch (state) {
+            case "Pathfinder":
+              return backgrounds.Pathfinder;
+            case "Bangalore":
+              return backgrounds.bangalore;
+            case "Bloodhound":
+              return backgrounds.bloodhound;
+            case "Wraith":
+              return backgrounds.wraith;
+            case "Wattson":
+              return backgrounds.wattson;
+            case "Caustic":
+              return backgrounds.caustic;
+            case "Mirage":
+              return backgrounds.mirage;
+            case "Lifeline":
+              return backgrounds.lifeline;
+            case "Gibraltar":
+              return backgrounds.gibraltar;
+            default:
+              return null;
+          }
+        };
+        // console.log(bgSwitch(legendName));
+        setBg(bgSwitch(legendName));
+        setLoading(false);
       })
       .catch(function() {
         console.log("error");
         setError("block");
+        setLoading(false);
       });
   }
 
@@ -128,9 +190,14 @@ function App() {
   // }, []);
 
   const captureValue = e => {
-    return e.key === "Enter" ? getData(e.target.value) && e.target.value === "" : null;
-  }
+    if (e.keyCode === 13) {
+      getData(window.input_search.value);
+    }
+  };
 
+  const captureValue2 = () => {
+    getData(window.input_search.value);
+  };
 
   const darkenBackground = () => setDarkness("226,59,46, 100%");
   const lightenBackground = () => setDarkness("170, 47, 43, 80%");
@@ -186,6 +253,7 @@ function App() {
                           onKeyDown={captureValue}
                           onFocus={darkenBackground}
                           onBlur={lightenBackground}
+                          id="input_search"
                         ></input>
                       </div>
                     </div>
@@ -193,7 +261,10 @@ function App() {
                 </Input>
               </div>
               <div className="col-sm-2">
-                <button>Search</button>
+                <SearchButton
+                  loadingState={loading}
+                  isClicked={captureValue2}
+                ></SearchButton>
               </div>
             </div>
           </InputContainer>
@@ -204,6 +275,17 @@ function App() {
             </p>
           </Error>
           <UserInfoBlock userinfo={legendStats}></UserInfoBlock>
+          <div className="container-fluid">
+            <div className="row">
+              <h1 className="overview-text">STATS OVERVIEW</h1>
+              <div className="separator"></div>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          {playerStats.map(x => (
+            <StatCard key={x.level} stats={x}></StatCard>
+          ))}
         </div>
       </div>
     </Background>
@@ -211,17 +293,3 @@ function App() {
 }
 
 export default App;
-
-const compare = (a, b) => {
-  const killsA = Number(a.stats.kills.value);
-  const killsB = Number(b.stats.kills.value);
-
-  var comparison = 0;
-  if (killsA < killsB) {
-    comparison = 1;
-  } else if (killsA > killsB) {
-    comparison = -1;
-  }
-
-  return comparison;
-};
