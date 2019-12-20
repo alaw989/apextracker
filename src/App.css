@@ -32,3 +32,16 @@ body {
 .overview-text {
   color: #fff;
 }
+
+.segway {
+  padding: 0px 15px; 
+  margin-bottom: 20px;
+}
+
+.margin {
+  margin-bottom: 50px;
+}
+
+.margin-sm {
+  margin-bottom: 20px; 
+}

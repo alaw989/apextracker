@@ -37,7 +37,7 @@ const UserInfoBlock = ({ userinfo }) => {
   `;
 
   return (
-    <div className="container">
+    <div className="container margin">
       <div className="row">
         <UserInfoContainer>
           <div className="col-sm-6 left">
