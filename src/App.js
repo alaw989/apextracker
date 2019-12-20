@@ -8,8 +8,9 @@ import SearchButton from "./components/SearchButton";
 import UserInfoBlock from "./components/UserInfoBlock";
 import PlatformIcons from "./components/PlatformIcons";
 import StatCard from "./components/StatCard";
+import FavCard from "./components/FavCard";
+import Separator from "./components/Seperator";
 import { backgrounds, compare } from "./utils.js";
-import { isTemplateElement } from "@babel/types";
 
 function App() {
   const myHeaders = new Headers();
@@ -25,6 +26,7 @@ function App() {
   const [bg, setBg] = useState(backgrounds.Pathfinder);
   const [data, setData] = useState();
   const [error, setError] = useState("none");
+  const [display, setDisplay] = useState("none");
   const [darkness, setDarkness] = useState("170, 47, 43, 80%");
   const [count, setCount] = useState(0);
 
@@ -35,6 +37,7 @@ function App() {
   });
 
   const [playerStats, setplayerStats] = useState([]);
+  const [favStats, setFavStats] = useState([]);
   console.log("players stats:", playerStats);
   const proxy_url = "https://fathomless-mesa-94824.herokuapp.com/";
   const apiUrlWithCode =
@@ -112,7 +115,7 @@ function App() {
         const sortedByKills = filterUndefined.sort(compare);
 
         const prefix = resJson.data.segments[0];
-        console.log("Prefix:", prefix);
+        console.log("Prefix:", sortedByKills);
         // console.log(prefix.stats.level.value);
 
         let stats = [];
@@ -128,12 +131,21 @@ function App() {
               subtitle: stat.displayName,
               stat: stat.value
             };
-
             stats.push(item);
           }
         }
 
-        console.log("---", stats);
+        // remove the "overall" stats object from the data and build favorites object
+        const overviewRemoved = sortedByKills
+          .filter(x => x.type !== "overview")
+          .map(x => ({
+            favName: x.metadata.name,
+            favImage: x.metadata.imageUrl
+          }));
+        // setFavStats(overviewRemoved);
+        console.log("overview removed:", overviewRemoved);
+
+        // console.log("---", stats);
 
         setplayerStats(stats);
 
@@ -147,6 +159,7 @@ function App() {
         });
         setError("none");
         setData(resJson.data);
+        setDisplay("block");
         // console.log(sortedByKills[1].metadata.name);
         const legendName = sortedByKills[1].metadata.name;
 
@@ -275,16 +288,29 @@ function App() {
             </p>
           </Error>
           <UserInfoBlock userinfo={legendStats}></UserInfoBlock>
-          <div className="container-fluid">
-            <div className="row">
-              <h1 className="overview-text">STATS OVERVIEW</h1>
-              <div className="separator"></div>
+        </div>
+        <Separator toggleDisplay={display}>
+          <div class="row segway">
+            <div className="col-sm-12 background">
+              <h2> Stats Overview</h2>
             </div>
           </div>
-        </div>
-        <div className="row">
+        </Separator>
+        <div className="row margin-sm">
           {playerStats.map(x => (
             <StatCard key={x.level} stats={x}></StatCard>
+          ))}
+        </div>
+        <Separator toggleDisplay={display}>
+          <div class="row segway">
+            <div className="col-sm-12 background">
+              <h2>Favorite Legends</h2>
+            </div>
+          </div>
+        </Separator>
+        <div className="row margin-sm">
+          {favStats.map(x => (
+            <FavCard key={x.name} favstats={x}></FavCard>
           ))}
         </div>
       </div>

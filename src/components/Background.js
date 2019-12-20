@@ -60,7 +60,6 @@ ${props => props.bgData};
     height: 10px;
     width: 100%;
     background-color: #24283C;
- 
   }
 `;
 
