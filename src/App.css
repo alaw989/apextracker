@@ -45,3 +45,7 @@ body {
 .margin-sm {
   margin-bottom: 20px; 
 }
+
+.legend-bar {
+  background-color: #2C3046;
+}

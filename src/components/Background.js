@@ -20,7 +20,7 @@ ${props => props.bgData};
   justify-content: flex-start;
   flex-direction: column;
   align-items: center;
-  background-position: center; 
+  background-position: top; 
   background-repeat: no-repeat;
 
   button {
