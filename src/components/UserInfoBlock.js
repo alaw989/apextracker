@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { svgs } from "../utils.js";
 
 const UserInfoBlock = ({ userinfo }) => {
-//   console.log(svgs);
-//   console.log(userinfo.platformCode);
+  //   console.log(svgs);
+  //   console.log(userinfo.platformCode);
   const platformCode = userinfo.platformCode;
   const UserInfoContainer = styled.div`
     .left {
@@ -21,7 +21,7 @@ const UserInfoBlock = ({ userinfo }) => {
       justify-content: flex-end;
 
       img {
-          width: 80px;
+        width: 80px;
       }
     }
     width: 100%;

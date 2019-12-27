@@ -142,7 +142,7 @@ function App() {
             favName: x.metadata.name,
             favImage: x.metadata.imageUrl
           }));
-        // setFavStats(overviewRemoved);
+        setFavStats(overviewRemoved);
         console.log("overview removed:", overviewRemoved);
 
         // console.log("---", stats);
@@ -302,9 +302,9 @@ function App() {
           ))}
         </div>
         <Separator toggleDisplay={display}>
-          <div class="row segway">
+          <div class="row">
             <div className="col-sm-12 background">
-              <h2>Favorite Legends</h2>
+              <h3>Favorite Legends</h3>
             </div>
           </div>
         </Separator>
