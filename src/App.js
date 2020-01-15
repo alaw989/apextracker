@@ -11,6 +11,7 @@ import StatCard from "./components/StatCard";
 import FavCard from "./components/FavCard";
 import Separator from "./components/Seperator";
 import { backgrounds, compare } from "./utils.js";
+import { useSpring, animated } from "react-spring";
 
 function App() {
   const myHeaders = new Headers();
@@ -25,7 +26,7 @@ function App() {
   const [platformCode, setplatformCode] = useState(null);
   const [bg, setBg] = useState(backgrounds.Pathfinder);
   const [data, setData] = useState();
-  const [error, setError] = useState("none");
+  const [error, setError] = useState("0");
   const [display, setDisplay] = useState("none");
   const [darkness, setDarkness] = useState("170, 47, 43, 80%");
   const [count, setCount] = useState(0);
@@ -38,7 +39,7 @@ function App() {
 
   const [playerStats, setplayerStats] = useState([]);
   const [favStats, setFavStats] = useState([]);
-  console.log("players stats:", playerStats);
+  // console.log("players stats:", playerStats);
   const proxy_url = "https://fathomless-mesa-94824.herokuapp.com/";
   const apiUrlWithCode =
     "https://public-api.tracker.gg/v2/apex/standard/profile/" +
@@ -134,13 +135,17 @@ function App() {
             stats.push(item);
           }
         }
-
+        console.log('sorted by kills:', sortedByKills);
         // remove the "overall" stats object from the data and build favorites object
         const overviewRemoved = sortedByKills
           .filter(x => x.type !== "overview")
           .map(x => ({
             favName: x.metadata.name,
-            favImage: x.metadata.imageUrl
+            favImage: x.metadata.imageUrl,
+            killsDisplayName: x.stats.kills.displayName,
+            killsDisplayValue: x.stats.kills.displayValue,
+            seasonWinsDisplayName: x.stats.seasonWins.displayName,
+            seasonWinsDisplayValue: x.stats.seasonWins.displayValue
           }));
         setFavStats(overviewRemoved);
         console.log("overview removed:", overviewRemoved);
@@ -157,7 +162,7 @@ function App() {
           avatar: resJson.data.platformInfo.avatarUrl,
           platformCode: platformCode
         });
-        setError("none");
+        setError("0");
         setData(resJson.data);
         setDisplay("block");
         // console.log(sortedByKills[1].metadata.name);
@@ -193,7 +198,7 @@ function App() {
       })
       .catch(function() {
         console.log("error");
-        setError("block");
+        setError("1");
         setLoading(false);
       });
   }
@@ -231,12 +236,18 @@ function App() {
       : console.log(iconIndex.active);
   };
 
+  const props = useSpring({
+    opacity: 1,
+    transform: "translateY(0px)",
+    from: { opacity: 0, transform: "translateY(-50px)" }
+  });
+
   return (
     <Background bgData={bg}>
       <div className="container">
         <div className="row">
           <InputContainer darkness={darkness}>
-            <div className="search_wrapper">
+            <animated.div className="search_wrapper" style={props}>
               <div className="col-sm-4 no-padding">
                 <p>CHECK PLAYER RANK AND STATS</p>
               </div>
@@ -279,7 +290,7 @@ function App() {
                   isClicked={captureValue2}
                 ></SearchButton>
               </div>
-            </div>
+            </animated.div>
           </InputContainer>
           <Error toggleDisplay={error}>
             <p>
@@ -287,31 +298,35 @@ function App() {
               platform and try again.
             </p>
           </Error>
-          <UserInfoBlock userinfo={legendStats}></UserInfoBlock>
+
+          <UserInfoBlock
+            userinfo={legendStats}
+            toggleDisplay={error}
+          ></UserInfoBlock>
         </div>
         <Separator toggleDisplay={display}>
-          <div class="row segway">
+          <div className="row segway">
             <div className="col-sm-12 background">
-              <h2> Stats Overview</h2>
+              <h2>Stats Overview</h2>
             </div>
           </div>
         </Separator>
         <div className="row margin-sm">
-          {playerStats.map(x => (
-            <StatCard key={x.level} stats={x}></StatCard>
+          {playerStats.map((x, index) => (
+            <StatCard key={index} stats={x}></StatCard>
           ))}
         </div>
         <Separator toggleDisplay={display}>
-          <div class="row">
-            <div className="col-sm-12 background">
+          <div className="row segway">
+            <div className="col-sm-12 background-dark">
               <h3>Favorite Legends</h3>
             </div>
           </div>
         </Separator>
-        <div className="row margin-sm">
-          {favStats.map(x => (
-            <FavCard key={x.name} favstats={x}></FavCard>
-          ))}
+        <div className="row segway margin-sm background-dark">
+          {favStats.map((x, index) =>
+            index <= 1 ? <FavCard key={index} favstats={x}></FavCard> : ""
+          )}
         </div>
       </div>
     </Background>
