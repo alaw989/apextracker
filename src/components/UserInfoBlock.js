@@ -2,44 +2,51 @@ import React from "react";
 import styled from "styled-components";
 import { svgs } from "../utils.js";
 
+const UserInfoContainer = styled.div`
+  .left {
+    display: flex;
+    align-items: center;
+    img {
+      border-radius: 50%;
+      width: 100px;
+    }
+  }
+  .right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    img {
+      width: 80px;
+    }
+  }
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 30px;
+  transition: 1s;
+  opacity: ${props => props.user === "" ? "0" : "1"};
+  transform: ${props => props.user === "" ? "translateY(50px)" : "translateY(0px)"};
+
+  h1 {
+    color: #fff;
+    font-size: 3vw;
+    font-weight: 700;
+  }
+`;
+
+
+
 const UserInfoBlock = ({ userinfo }) => {
   //   console.log(svgs);
   //   console.log(userinfo.platformCode);
+
   const platformCode = userinfo.platformCode;
-  const UserInfoContainer = styled.div`
-    .left {
-      display: flex;
-      align-items: center;
-      img {
-        border-radius: 50%;
-        width: 100px;
-      }
-    }
-    .right {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-
-      img {
-        width: 80px;
-      }
-    }
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px 30px;
-    h1 {
-      color: #fff;
-      font-size: 3vw;
-      font-weight: 700;
-    }
-  `;
-
   return (
     <div className="container margin">
       <div className="row">
-        <UserInfoContainer>
+        <UserInfoContainer user={userinfo.avatar}>
           <div className="col-sm-6 left">
             <div className="col-sm-4">
               <img src={userinfo.avatar} alt=""></img>
@@ -65,5 +72,6 @@ const UserInfoBlock = ({ userinfo }) => {
     </div>
   );
 };
+
 
 export default UserInfoBlock;

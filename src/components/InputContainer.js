@@ -11,7 +11,7 @@ const InputContainer = styled.div`
       );
   .search_wrapper {
     background-color: rgb(${props => props.darkness});
-    transition: 1s;
+
   }
 `;
 
