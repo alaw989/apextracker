@@ -116,13 +116,15 @@ function App() {
         const sortedByKills = filterUndefined.sort(compare);
 
         const prefix = resJson.data.segments[0];
-        console.log("Prefix:", sortedByKills);
+        // console.log("Prefix:", sortedByKills);
         // console.log(prefix.stats.level.value);
-
+          sortedByKills.map(x => {
+            console.log(x.stats.kills)
+          })
         let stats = [];
 
         for (let prop in prefix.stats) {
-          console.log("---", prop);
+          // console.log("---", prop);
 
           let stat = prefix.stats[prop];
 
@@ -135,20 +137,21 @@ function App() {
             stats.push(item);
           }
         }
-        console.log('sorted by kills:', sortedByKills);
+        
+        // console.log('sorted by kills:', sortedByKills);
         // remove the "overall" stats object from the data and build favorites object
-        const overviewRemoved = sortedByKills
-          .filter(x => x.type !== "overview")
-          .map(x => ({
-            favName: x.metadata.name,
-            favImage: x.metadata.imageUrl,
-            killsDisplayName: x.stats.kills.displayName,
-            killsDisplayValue: x.stats.kills.displayValue,
-            seasonWinsDisplayName: x.stats.seasonWins.displayName,
-            seasonWinsDisplayValue: x.stats.seasonWins.displayValue
-          }));
-        setFavStats(overviewRemoved);
-        console.log("overview removed:", overviewRemoved);
+        // const overviewRemoved = sortedByKills
+        //   .filter(x => x.type !== "overview")
+        //   .map(x => ({
+        //     favName: x.metadata.name,
+        //     favImage: x.metadata.imageUrl,
+        //     killsDisplayName: x.stats.kills.displayName,
+        //     killsDisplayValue: x.stats.kills.displayValue,
+        //     seasonWinsDisplayName: x.stats.seasonWins.displayName,
+        //     seasonWinsDisplayValue: x.stats.seasonWins.displayValue
+        //   }));
+        // setFavStats(overviewRemoved);
+        // console.log("overview removed:", overviewRemoved);
 
         // console.log("---", stats);
 
