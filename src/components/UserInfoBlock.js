@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { svgs } from "../utils.js";
 
 const UserInfoContainer = styled.div`
+.row {
+  width: 100%;
   .left {
     display: flex;
     align-items: center;
@@ -28,6 +30,8 @@ const UserInfoContainer = styled.div`
   transition: 1s;
   opacity: ${props => props.user === "" ? "0" : "1"};
   transform: ${props => props.user === "" ? "translateY(50px)" : "translateY(0px)"};
+}
+
 
   h1 {
     color: #fff;
@@ -39,14 +43,13 @@ const UserInfoContainer = styled.div`
 
 
 const UserInfoBlock = ({ userinfo }) => {
-  //   console.log(svgs);
-  //   console.log(userinfo.platformCode);
 
   const platformCode = userinfo.platformCode;
   return (
     <div className="container margin">
-      <div className="row">
+     
         <UserInfoContainer user={userinfo.avatar}>
+        <div className="row">
           <div className="col-sm-6 left">
             <div className="col-sm-4">
               <img src={userinfo.avatar} alt=""></img>
@@ -67,8 +70,10 @@ const UserInfoBlock = ({ userinfo }) => {
           <div className="col-sm-6 right">
             <img src={userinfo.iconUrl} alt=""></img>
           </div>
+          </div>
         </UserInfoContainer>
-      </div>
+      
+
     </div>
   );
 };

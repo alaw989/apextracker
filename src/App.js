@@ -7,6 +7,7 @@ import Input from "./components/Input";
 import SearchButton from "./components/SearchButton";
 import UserInfoBlock from "./components/UserInfoBlock";
 import PlatformIcons from "./components/PlatformIcons";
+import AnimateAll from "./components/AnimateAll";
 import StatCard from "./components/StatCard";
 import FavCard from "./components/FavCard";
 import Separator from "./components/Seperator";
@@ -22,7 +23,7 @@ function App() {
     platformCode: null
   });
 
-  const [animate, setAnimate] = useState(false);
+  const [animate, setAnimate] = useState(true);
   const [animateCount, setAnimateCount] = useState(0);
 
   const [loading, setLoading] = useState(false);
@@ -79,28 +80,13 @@ function App() {
               stat: stat.value
             };
             stats.push(item);
-
-            
           }
         }
-        stats.push(animate);
-        console.log('stats', stats);
 
         // remove the "overall" stats object from the data and build favorites object
         const overviewRemoved = sortedByKills.filter(
           x => x.type !== "overview"
         );
-
-        setFavStats(overviewRemoved);
-
-        setplayerStats(stats);
-
-        setlegendStats({
-          name: resJson.data.platformInfo.platformUserHandle,
-          iconUrl: resJson.data.segments[0].stats.rankScore.metadata.iconUrl,
-          avatar: resJson.data.platformInfo.avatarUrl,
-          platformCode: platformCode
-        });
 
         setError("0");
         setData(resJson.data);
@@ -109,18 +95,33 @@ function App() {
         setBg(bgSwitch(legendName));
         setLoading(false);
 
-        setAnimateCount(animateCount + 1); 
+        setAnimateCount(animateCount + 1);
         console.log(animateCount);
-      
 
-        setAnimate(false);
-        
-
-          
-      
-    
-     
-
+        if (animateCount >= 1) {
+          setAnimate(false);
+          setTimeout(function() {
+            setAnimate(true);
+            setplayerStats(stats);
+            setFavStats(overviewRemoved);
+            setlegendStats({
+              name: resJson.data.platformInfo.platformUserHandle,
+              iconUrl:
+                resJson.data.segments[0].stats.rankScore.metadata.iconUrl,
+              avatar: resJson.data.platformInfo.avatarUrl,
+              platformCode: platformCode
+            });
+          }, 1000);
+        } else if (animateCount <= 1) {
+          setplayerStats(stats);
+          setFavStats(overviewRemoved);
+          setlegendStats({
+            name: resJson.data.platformInfo.platformUserHandle,
+            iconUrl: resJson.data.segments[0].stats.rankScore.metadata.iconUrl,
+            avatar: resJson.data.platformInfo.avatarUrl,
+            platformCode: platformCode
+          });
+        }
       })
       .catch(function() {
         console.log("error");
@@ -224,23 +225,31 @@ function App() {
               platform and try again.
             </p>
           </Error>
-          <UserInfoBlock
-            userinfo={legendStats}
-            toggleDisplay={error}
-          ></UserInfoBlock>
+          <AnimateAll rerenderAnimate={animate}>
+            <UserInfoBlock
+              userinfo={legendStats}
+              toggleDisplay={error}
+            ></UserInfoBlock>
+          </AnimateAll>
         </div>
-        <Separator toggleDisplay={display}>
-          <div className="row segway">
-            <div className="col-sm-12 background">
-              <h2>Stats Overview</h2>
+        <AnimateAll rerenderAnimate={animate}>
+          <Separator toggleDisplay={display}>
+            <div className="row segway">
+              <div className="col-sm-12 background">
+                <h2>Stats Overview</h2>
+              </div>
             </div>
+          </Separator>
+        </AnimateAll>
+
+        <AnimateAll rerenderAnimate={animate}>
+          <div className="row margin-sm">
+            {playerStats.map((x, index) => (
+              <StatCard key={index} stats={x}></StatCard>
+            ))}
           </div>
-        </Separator>
-        <div className="row margin-sm">
-          {playerStats.map((x, index) => (
-            <StatCard key={index} stats={x}></StatCard>
-          ))}
-        </div>
+        </AnimateAll>
+
         <Separator toggleDisplay={display}>
           <div className="row segway">
             <div className="col-sm-12 background-dark">
@@ -248,11 +257,14 @@ function App() {
             </div>
           </div>
         </Separator>
-        <div className="row segway margin-sm background-dark">
-          {favStats.map((x, index) =>
-            index <= 1 ? <FavCard key={index} favstats={x}></FavCard> : ""
-          )}
-        </div>
+
+        <AnimateAll rerenderAnimate={animate}>
+          <div className="row segway margin-sm background-dark">
+            {favStats.map((x, index) =>
+              index <= 1 ? <FavCard key={index} favstats={x}></FavCard> : ""
+            )}
+          </div>
+        </AnimateAll>
       </div>
     </Background>
   );
