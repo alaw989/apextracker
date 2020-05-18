@@ -4,15 +4,25 @@ import { useSpring, animated } from "react-spring";
 
 const FavLegendBar = styled.div`
   .container {
-    display: flex;
-    flex-direction: column;
+    display: flex; 
+    position: relative; 
+    padding: 10px 0; 
     .upper,
     .lower {
       display: flex;
+      align-items: center; 
+
     }
 
     .upper {
       align-items: center;
+    }
+
+    .lower {
+      position: absolute; 
+      top: 50%; 
+      transform: translateY(-10px);
+      right: 0;
     }
 
     img {

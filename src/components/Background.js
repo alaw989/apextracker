@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { backgrounds } from "../utils.js";
-
+import { mq } from "../_mixins.js";
 
 
 const Background = styled.div`
@@ -47,10 +46,13 @@ ${props => props.bgData};
   }
 
   .search_wrapper {
-    display: flex;
     padding: 10px 0;
-    width: 100%;
-    align-items: center;
+  
+    @media ${mq.md} {
+      display: flex;
+      width: 100%;
+      align-items: center;
+    }
 
     button {
       width: 100%;

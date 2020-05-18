@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const InputContainer = styled.div`
+const InputContainer = styled.div `
   width: 100%;
   clip-path: polygon(
         0 0,
@@ -11,7 +11,6 @@ const InputContainer = styled.div`
       );
   .search_wrapper {
     background-color: rgb(${props => props.darkness});
-
   }
 `;
 
