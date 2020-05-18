@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React from "react";
 import ClipLoader from "react-spinners/ClipLoader";
 import { svgs } from "../utils.js";
+import { mq } from "../_mixins.js";
 
 const SearchButton = ({ loadingState, isClicked }) => {
   const SearchIcon = styled.div`
@@ -9,15 +10,15 @@ const SearchButton = ({ loadingState, isClicked }) => {
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: .5s;
+      transition: 0.5s;
       padding: 10px 0px;
     }
     button:hover {
-      background-color: hsla(0,0%,100%,.2);
+      background-color: hsla(0, 0%, 100%, 0.2);
     }
     p {
       margin: 0;
-      font-size: 1.1vw;
+      font-size: 15px;
     }
     svg {
       fill: #fff;

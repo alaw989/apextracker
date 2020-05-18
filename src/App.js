@@ -14,6 +14,7 @@ import Separator from "./components/Seperator";
 import { backgrounds, compare, icons, bgSwitch } from "./utils.js";
 import { useSpring, animated } from "react-spring";
 
+
 function App() {
   const myHeaders = new Headers();
   myHeaders.append("TRN-Api-Key", "05e6eb8f-3e95-4fbb-a2b5-b0f4dbb124c9");
@@ -175,14 +176,14 @@ function App() {
         <div className="row">
           <InputContainer darkness={darkness}>
             <animated.div className="search_wrapper" style={props}>
-              <div className="col-sm-4 no-padding">
+              <div className="col-12 col-md-3 col-lg-4 no-padding">
                 <p>CHECK PLAYER RANK AND STATS</p>
               </div>
-              <div className="col-sm-6 no-padding">
+              <div className="col-12 col-md-7 col-lg-6 no-padding">
                 <Input>
                   <div className="container">
                     <div className="row">
-                      <div className="col-sm-2 no-padding svg-wrapper">
+                      <div className="col-4 col-sm-2 col-md-2 no-padding svg-wrapper">
                         {icons.map((x, index) => (
                           <div
                             className={
@@ -197,7 +198,7 @@ function App() {
                           </div>
                         ))}
                       </div>
-                      <div className="col-sm-10 no-padding">
+                      <div className="col-8 col-sm-10 no-padding">
                         <input
                           type="text"
                           placeholder="Apex Username"
