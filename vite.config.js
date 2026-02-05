@@ -2,9 +2,33 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'node:url'
 
-// https://vite.dev/config/
+// Conditional plugins for bundle analysis
+// visualizer added only when --mode analyze is passed
+import { visualizer } from 'rollup-plugin-visualizer'
+
+const plugins = [vue()]
+
+// Add visualizer plugin only in analyze mode
+// Run with: npm run build:analyze
+// Generates dist/stats.html with interactive bundle visualization
+if (process.argv.includes('--mode') && process.argv.includes('analyze')) {
+  plugins.push(
+    visualizer({
+      filename: 'dist/stats.html',
+      gzipSize: true,
+      brotliSize: true
+    })
+  )
+}
+
+// Optional: vite-plugin-compression for gzip/brotli pre-compression
+// To enable, install and uncomment:
+// import viteCompression from 'vite-plugin-compression'
+// plugins.push(viteCompression({ algorithm: 'gzip', ext: '.gz' }))
+// plugins.push(viteCompression({ algorithm: 'brotliCompress', ext: '.br' }))
+
 export default defineConfig({
-  plugins: [vue()],
+  plugins,
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
