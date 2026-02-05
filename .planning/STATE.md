@@ -11,18 +11,18 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 ## Current Position
 
 Phase: 4 of 4 (Performance)
-Plan: 1 of 3 in phase
+Plan: 2 of 3 in phase
 Status: In progress
-Last activity: 2026-02-05 — Completed 04-02-PLAN.md (Lazy Loading)
+Last activity: 2026-02-05 — Completed 04-01-PLAN.md (API Caching)
 
-Progress: [███████████] 84% (16/19 plans complete)
+Progress: [██████████░] 84% (16/19 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 15
-- Average duration: 4.5 min
-- Total execution time: 68 minutes
+- Total plans completed: 16
+- Average duration: 4.4 min
+- Total execution time: 72 minutes
 
 **By Phase:**
 
@@ -31,10 +31,10 @@ Progress: [███████████] 84% (16/19 plans complete)
 | 1. Core Lookup | 6/6 | 30 min | 5 min |
 | 2. Visual Polish | 2/2 | 10 min | 5 min |
 | 3. SEO & Sharing | 7/7 | 28 min | 4 min |
-| 4. Performance | 1/3 | 2 min | 2 min |
+| 4. Performance | 2/3 | 6 min | 3 min |
 
 **Recent Trend:**
-- Last 7 plans: 01-06 (5min), 02-01 (5min), 02-02 (<1min), 03-01 (5min), 03-02 (4min), 03-06 (6min), 04-02 (2min)
+- Last 7 plans: 01-06 (5min), 02-01 (5min), 02-02 (<1min), 03-01 (5min), 03-02 (4min), 03-06 (6min), 04-02 (2min), 04-01 (4min)
 - Trend: Steady progress
 
 *Updated after each plan completion*
@@ -101,6 +101,11 @@ Recent decisions affecting current work:
 - [03-07]: Standardized all mobile breakpoints to 768px for consistency
 - [03-07]: Horizontal card layout for legends on mobile (more compact than vertical)
 - [03-07]: 44px min-height universally applied to all interactive elements for WCAG compliance
+- [04-01]: 15-minute freshness window balances data freshness with API rate limit protection
+- [04-01]: LRU eviction with MAX_CACHE_SIZE=10 prevents localStorage overflow
+- [04-01]: Stale-while-revalidate returns cached data immediately while fetching fresh in background
+- [04-01]: Manual refresh button always available for users who need fresh data
+- [04-01]: Cache timestamp visible to users so they know data age
 - [04-02]: IntersectionObserver with 50px rootMargin for lazy loading images before viewport entry
 - [04-02]: Viewport detection triggers immediate image load for visible elements (no observer delay)
 - [04-02]: useLazyImage composable pattern for reusable lazy loading with VueUse
@@ -117,5 +122,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-05
-Stopped at: Completed 04-02-PLAN.md (Lazy Loading)
+Stopped at: Completed 04-01-PLAN.md (API Caching)
 Resume file: None
