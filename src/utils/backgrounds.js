@@ -26,18 +26,18 @@ const LEGEND_BACKGROUNDS = {
 /**
  * Default background path for unknown legends
  */
-const DEFAULT_BACKGROUND = '/images/legends/pathfinder.jpg'
+const DEFAULT_BACKGROUND = '/backgrounds/default.jpg'
 
 /**
  * Get the background image path for a legend
  *
  * @param {string} legendName - The name of the legend (case-insensitive)
- * @returns {string|null} The path to the background image, or default if not found
+ * @returns {string} The path to the background image, or default if not found
  *
  * @example
- * getBackgroundForLegend('Pathfinder') // returns '/images/legends/pathfinder.jpg'
- * getBackgroundForLegend('BANGALORE') // returns '/images/legends/bangalore.png'
- * getBackgroundForLegend('Unknown') // returns default background
+ * getBackgroundForLegend('Pathfinder') // returns '/backgrounds/pathfinder.jpg'
+ * getBackgroundForLegend('BANGALORE') // returns '/backgrounds/bangalore.png'
+ * getBackgroundForLegend('Unknown') // returns '/backgrounds/default.jpg'
  */
 export function getBackgroundForLegend(legendName) {
   if (!legendName || typeof legendName !== 'string') {
@@ -47,7 +47,7 @@ export function getBackgroundForLegend(legendName) {
   const key = legendName.toLowerCase().trim()
   const filename = LEGEND_BACKGROUNDS[key]
 
-  return filename ? `/images/legends/${filename}` : DEFAULT_BACKGROUND
+  return filename ? `/backgrounds/${filename}` : DEFAULT_BACKGROUND
 }
 
 /**
