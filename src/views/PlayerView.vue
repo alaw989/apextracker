@@ -11,12 +11,14 @@ import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { usePlayerStore } from '@/stores/player'
+import { PLATFORMS } from '@/utils/constants'
 import SearchInput from '@/components/search/SearchInput.vue'
 import PlatformSelect from '@/components/search/PlatformSelect.vue'
 import SearchButton from '@/components/search/SearchButton.vue'
 import LoadingSpinner from '@/components/ui/LoadingSpinner.vue'
 import ErrorMessage from '@/components/ui/ErrorMessage.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
+import ShareButton from '@/components/ui/ShareButton.vue'
 import PlayerHeader from '@/components/stats/PlayerHeader.vue'
 import StatsList from '@/components/stats/StatsList.vue'
 import FavoriteLegends from '@/components/legends/FavoriteLegends.vue'
@@ -44,6 +46,14 @@ const { data, loading, error } = storeToRefs(playerStore)
 // Local search form state for quick new search
 const searchUsername = ref('')
 const searchPlatform = ref('origin')
+
+/**
+ * Computed platform name for Schema.org markup
+ */
+const platformName = computed(() => {
+  const platform = PLATFORMS.find(p => p.id === props.platform)
+  return platform?.name || props.platform
+})
 
 /**
  * Computed favorite legend from player data
@@ -115,7 +125,7 @@ playerStore.clearPlayer()
 </script>
 
 <template>
-  <article class="player-view">
+  <article class="player-view" itemscope itemtype="https://schema.org/Person">
     <!-- Quick Search Form -->
     <form class="quick-search" @submit.prevent="handleNewSearch" aria-label="Search for another player">
       <SearchInput
@@ -168,14 +178,16 @@ playerStore.clearPlayer()
     <template v-else-if="data">
       <!-- Player Info Header -->
       <header class="player-section">
-        <h1 class="visually-hidden">{{ data.name }}</h1>
+        <h1 class="visually-hidden" itemprop="name">{{ data.name }}</h1>
         <PlayerHeader
           :player="{
             name: data.name,
             avatar: data.avatar,
-            rankIcon: data.rankIcon
+            rankIcon: data.rankIcon,
+            platformName: platformName
           }"
         />
+        <meta itemprop="affiliation" :content="platformName" />
       </header>
 
       <!-- Player Statistics Section -->
