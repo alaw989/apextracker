@@ -57,11 +57,11 @@ Plans:
 2. Stat cards animate smoothly when appearing (fade/slide transitions)
 3. Animations replay cleanly when searching for a new player
 
-**Plans**: TBD
+**Plans**: 2 plans in 1 wave
 
 Plans:
-- [ ] 02-01: Dynamic background system tied to favorite legend
-- [ ] 02-02: Stat card transition animations (Vue Transition components)
+- [ ] 02-01-PLAN.md — Dynamic background system tied to favorite legend with Vue Transition crossfade
+- [ ] 02-02-PLAN.md — Stat card transition animations using Vue Transition and TransitionGroup components
 
 ### Phase 3: SEO & Sharing
 
@@ -114,8 +114,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Lookup | 6/6 | ✓ Complete | 2026-02-04 |
-| 2. Visual Polish | 0/2 | Next | - |
+| 1. Core Lookup | 6/6 | Complete | 2026-02-04 |
+| 2. Visual Polish | 0/2 | Ready | - |
 | 3. SEO & Sharing | 0/4 | Not started | - |
 | 4. Performance | 0/3 | Not started | - |
 
