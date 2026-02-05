@@ -24,10 +24,12 @@ export const API_CONFIG = {
   API_KEY: '05e6eb8f-3e95-4fbb-a2b5-b0f4dbb124c9',
 
   // Base URL for Apex Legends API v2
-  BASE_URL: 'https://public-api.tracker.gg/v2/apex/standard/profile',
+  // During development, use Vite's proxy to bypass CORS
+  BASE_URL: import.meta.env?.DEV
+    ? '/api/v2/apex/standard/profile'
+    : 'https://public-api.tracker.gg/v2/apex/standard/profile',
 
-  // Proxy URL for CORS workaround
-  // Store as env var for easy migration to DigitalOcean later
+  // Legacy proxy URL (kept for reference, migrating to DigitalOcean)
   PROXY_URL: import.meta.env?.VITE_PROXY_URL || 'https://fathomless-mesa-94824.herokuapp.com/'
 };
 

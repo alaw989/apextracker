@@ -10,7 +10,11 @@ import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { usePlayerStore } from '@/stores/player'
 import { RouterView } from 'vue-router'
+import { usePageTitle } from '@/composables/usePageTitle'
 import AppBackground from '@/components/visual/AppBackground.vue'
+
+// Initialize page title management
+usePageTitle()
 
 // Pinia store
 const playerStore = usePlayerStore()

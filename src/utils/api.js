@@ -33,8 +33,10 @@ export async function fetchPlayerStats(username, platform) {
   // Trim username for API call
   const cleanUsername = username.trim()
 
-  // Construct URL: PROXY_URL + BASE_URL + /platform/username
-  const url = `${API_CONFIG.PROXY_URL}${API_CONFIG.BASE_URL}/${platform}/${cleanUsername}`
+  // Construct URL: BASE_URL + /platform/username
+  // In development, uses Vite proxy (/api prefix)
+  // In production, uses direct URL (requires CORS proxy on backend)
+  const url = `${API_CONFIG.BASE_URL}/${platform}/${cleanUsername}`
 
   try {
     const response = await fetch(url, {
