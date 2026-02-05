@@ -11,11 +11,11 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 ## Current Position
 
 Phase: 1 of 4 (Core Lookup)
-Plan: 0 of 6 in current phase
-Status: Ready to plan
-Last activity: 2026-02-04 — Roadmap created with 4 phases covering 17 v1 requirements
+Plan: 4 of 6 in current phase
+Status: In progress
+Last activity: 2026-02-05 — Completed 01-04-PLAN.md (API Integration)
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [███░░░░░░░] 50% (3/6 plans complete in Phase 1)
 
 ## Performance Metrics
 
@@ -28,14 +28,14 @@ Progress: [░░░░░░░░░░] 0%
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1. Core Lookup | 0/6 | - | - |
+| 1. Core Lookup | 3/6 | 12 min | 4 min |
 | 2. Visual Polish | 0/2 | - | - |
 | 3. SEO & Sharing | 0/4 | - | - |
 | 4. Performance | 0/3 | - | - |
 
 **Recent Trend:**
-- Last 5 plans: N/A
-- Trend: Not started
+- Last 3 plans: 01-01 (4min), 01-02 (4min), 01-04 (4min)
+- Trend: Steady progress, ~4 min/plan average
 
 *Updated after each plan completion*
 
@@ -48,6 +48,9 @@ Recent decisions affecting current work:
 
 - [Project Init]: Vue SPA rewrite chosen over React for simpler mental model
 - [Project Init]: Progressive rollout approach — ship in phases, each delivering value
+- [01-04]: Separate fetchPlayerStats utility for testability and reusability
+- [01-04]: searchLoading state separate from general loading for better UX
+- [01-04]: Data transformation in store rather than API utility for single responsibility
 
 ### Pending Todos
 
@@ -59,6 +62,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-04
-Stopped at: Roadmap creation complete, ready to begin Phase 1 planning
+Last session: 2026-02-05
+Stopped at: Completed 01-04-PLAN.md (API Integration with Tracker.gg)
 Resume file: None
