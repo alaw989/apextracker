@@ -13,6 +13,9 @@ import { useUiStore } from '@/stores/ui'
 import SearchInput from '@/components/search/SearchInput.vue'
 import PlatformSelect from '@/components/search/PlatformSelect.vue'
 import SearchButton from '@/components/search/SearchButton.vue'
+import PlayerHeader from '@/components/stats/PlayerHeader.vue'
+import StatsList from '@/components/stats/StatsList.vue'
+import FavoriteLegends from '@/components/legends/FavoriteLegends.vue'
 
 // Pinia stores
 const playerStore = usePlayerStore()
@@ -81,12 +84,39 @@ async function handleSearch() {
         </div>
       </div>
 
-      <!-- Player Results Display (placeholder for next phase) -->
-      <div v-if="data" class="results">
-        <div class="player-info">
-          <h2>{{ data.name }}</h2>
-          <p>Platform: {{ platform }}</p>
-        </div>
+      <!-- Player Results Display -->
+      <template v-if="data">
+        <!-- Player Header with Avatar, Name, and Rank -->
+        <PlayerHeader
+          :player="{
+            name: data.name,
+            avatar: data.avatar,
+            rankIcon: data.rankIcon
+          }"
+          class="results-section"
+        />
+
+        <!-- Stats List (vertical layout, NOT grid) -->
+        <StatsList
+          :stats="data.stats"
+          class="results-section"
+        />
+
+        <!-- Favorite Legends (top 2 by kills) -->
+        <FavoriteLegends
+          :legends="data.legends"
+          class="results-section"
+        />
+      </template>
+
+      <!-- Empty State (when no search has been done) -->
+      <div v-else-if="!error" class="empty-state">
+        <svg class="empty-state__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+        <h3 class="empty-state__title">Search for a Player</h3>
+        <p class="empty-state__text">Enter an Apex Legends username and select a platform to view stats.</p>
       </div>
     </div>
   </div>
@@ -155,16 +185,43 @@ async function handleSearch() {
   font-size: 0.875rem;
 }
 
-/* Results Section (placeholder) */
-.results {
-  margin-top: var(--spacing-xl);
+/* Results Section */
+.results-section {
+  margin-top: var(--spacing-lg);
+  width: 100%;
 }
 
-.player-info {
-  padding: var(--spacing-md);
-  background-color: var(--bg-card);
+/* Empty State */
+.empty-state {
+  margin-top: var(--spacing-2xl);
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  text-align: center;
+  border: 2px dashed var(--border);
   border-radius: var(--radius-md);
-  border: 1px solid var(--border);
+}
+
+.empty-state__icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto var(--spacing-md);
+  color: var(--text-muted);
+  stroke-width: 2;
+}
+
+.empty-state__title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.empty-state__text {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Responsive Design */
