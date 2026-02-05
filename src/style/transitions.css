@@ -1,0 +1,48 @@
+/**
+ * Vue Transition Animation Classes
+ *
+ * This file contains shared transition animations for Vue's <Transition> and <TransitionGroup> components.
+ *
+ * IMPORTANT: Import this file ONLY in components that use transitions. Do NOT import in base.css
+ * to avoid loading unused CSS and to keep transitions co-located with their usage.
+ *
+ * Performance: All animations use only transform and opacity properties for GPU-accelerated,
+ * 60fps animations. No layout properties (width, height, padding, etc.) are animated.
+ */
+
+/* Single card appear animation (fade + slide up) */
+.card-appear-enter-active {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-appear-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Staggered list animation for multiple items (legend cards) */
+.stagger-enter-active {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stagger-enter-from {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+}
+
+/* Stagger delays using nth-child */
+.stagger-enter-active:nth-child(1) {
+  transition-delay: 0ms;
+}
+
+.stagger-enter-active:nth-child(2) {
+  transition-delay: 100ms;
+}
+
+.stagger-enter-active:nth-child(3) {
+  transition-delay: 200ms;
+}
+
+.stagger-enter-active:nth-child(4) {
+  transition-delay: 300ms;
+}
