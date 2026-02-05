@@ -6,23 +6,23 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Fast, accurate stat lookup that gives Apex players immediate insight into their performance and keeps them coming back to track their progress.
 
-**Current focus:** Phase 2 - Visual Polish
+**Current focus:** Phase 3 - SEO & Sharing
 
 ## Current Position
 
-Phase: 2 of 4 (Visual Polish)
-Plan: 2 of 2 in current phase
-Status: Phase complete
-Last activity: 2026-02-05 — Completed 02-02-PLAN.md (Stat Card Animation System)
+Phase: 3 of 4 (SEO & Sharing)
+Plan: 1 of 4 in current phase
+Status: In progress
+Last activity: 2026-02-05 — Completed 03-01-PLAN.md (Vue Router Integration)
 
-Progress: [████████░] 53% (8/15 plans complete)
+Progress: [█████████] 60% (9/15 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 8
-- Average duration: 5 min
-- Total execution time: 40 minutes
+- Total plans completed: 9
+- Average duration: 5.2 min
+- Total execution time: 48 minutes
 
 **By Phase:**
 
@@ -30,7 +30,7 @@ Progress: [████████░] 53% (8/15 plans complete)
 |-------|-------|-------|----------|
 | 1. Core Lookup | 6/6 | 30 min | 5 min |
 | 2. Visual Polish | 2/2 | 10 min | 5 min |
-| 3. SEO & Sharing | 0/4 | - | - |
+| 3. SEO & Sharing | 1/4 | 8 min | 8 min |
 | 4. Performance | 0/3 | - | - |
 
 **Recent Trend:**
@@ -76,6 +76,10 @@ Recent decisions affecting current work:
 - [02-02]: animKey ref pattern forces Vue to remount components, replaying animations on new search
 - [02-02]: TransitionGroup with stagger delays (100ms) for legend cards via nth-child CSS
 - [02-02]: 0.4s cubic-bezier(0.16, 1, 0.3, 1) easing for snappy, Apple-like animation feel
+- [03-01]: Vue Router 4 with history mode (not hash) for clean shareable URLs
+- [03-01]: Platform validation in router guard prevents invalid API calls before component mount
+- [03-01]: props: true on player route for clean component API (no useRoute() needed for params)
+- [03-01]: Scroll-to-top behavior on route navigation for better UX
 
 ### Pending Todos
 
@@ -88,5 +92,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-05
-Stopped at: Completed 02-02-PLAN.md (Stat Card Animation System)
+Stopped at: Completed 03-01-PLAN.md (Vue Router Integration)
 Resume file: None
