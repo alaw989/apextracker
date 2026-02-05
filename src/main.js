@@ -1,7 +1,6 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import router from './router'
-import { usePageTitle } from '@/composables/usePageTitle'
 import './style.css'
 import './style/_variables.css'
 import './style/base.css'
@@ -18,8 +17,5 @@ app.use(pinia)
 
 // Register Vue Router
 app.use(router)
-
-// Initialize page title management (must be after Pinia for store access)
-usePageTitle()
 
 app.mount('#app')

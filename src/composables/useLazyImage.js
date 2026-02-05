@@ -71,9 +71,7 @@ export function useLazyImage(src, options = {}) {
    * Check viewport immediately to skip observer for visible images
    */
   watch(targetRef, (element) => {
-    if (element) {
-      // Check if element is already in viewport
-      if (checkViewport()) {
+    if (element && checkViewport()) {
         shouldLoad.value = true
         stop() // Stop observer since we're loading immediately
       }

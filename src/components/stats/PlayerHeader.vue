@@ -8,7 +8,7 @@
  * @props {string} player.rankIcon - Rank icon image URL
  */
 
-import { computed, watch } from 'vue'
+import { computed, watch, ref } from 'vue'
 import BaseCard from '@/components/ui/BaseCard.vue'
 import LazyImage from '@/components/ui/LazyImage.vue'
 
