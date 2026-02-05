@@ -115,17 +115,19 @@ playerStore.clearPlayer()
 </script>
 
 <template>
-  <div class="player-view">
+  <article class="player-view">
     <!-- Quick Search Form -->
-    <div class="quick-search">
+    <form class="quick-search" @submit.prevent="handleNewSearch" aria-label="Search for another player">
       <SearchInput
         v-model="searchUsername"
         placeholder="Search another player..."
+        aria-label="Enter another player's username"
         @submit="handleNewSearch"
         class="quick-search__input"
       />
       <PlatformSelect
         v-model="searchPlatform"
+        aria-label="Select gaming platform"
         class="quick-search__platform"
       />
       <SearchButton
@@ -133,10 +135,11 @@ playerStore.clearPlayer()
         :disabled="!searchUsername.trim()"
         @click="handleNewSearch"
         class="quick-search__button"
+        aria-label="Search for player"
       >
         Search
       </SearchButton>
-    </div>
+    </form>
 
     <!-- Loading State -->
     <div v-if="loading" class="content-area">
@@ -163,32 +166,46 @@ playerStore.clearPlayer()
 
     <!-- Player Data Display -->
     <template v-else-if="data">
-      <!-- Player Header -->
-      <PlayerHeader
-        :player="{
-          name: data.name,
-          avatar: data.avatar,
-          rankIcon: data.rankIcon
-        }"
-        class="player-section"
-      />
+      <!-- Player Info Header -->
+      <header class="player-section">
+        <h1 class="visually-hidden">{{ data.name }}</h1>
+        <PlayerHeader
+          :player="{
+            name: data.name,
+            avatar: data.avatar,
+            rankIcon: data.rankIcon
+          }"
+        />
+      </header>
 
-      <!-- Stats List -->
-      <StatsList
-        :stats="data.stats"
-        class="player-section"
-      />
+      <!-- Player Statistics Section -->
+      <section aria-labelledby="stats-heading" class="player-section">
+        <h2 id="stats-heading" class="visually-hidden">Player Statistics</h2>
+        <StatsList :stats="data.stats" />
+      </section>
 
-      <!-- Favorite Legends -->
-      <FavoriteLegends
-        :legends="data.legends"
-        class="player-section"
-      />
+      <!-- Favorite Legends Section -->
+      <section aria-labelledby="legends-heading" class="player-section">
+        <h2 id="legends-heading" class="visually-hidden">Favorite Legends</h2>
+        <FavoriteLegends :legends="data.legends" />
+      </section>
     </template>
-  </div>
+  </article>
 </template>
 
 <style scoped>
+/* Visually Hidden - for screen reader only content */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
 .player-view {
   width: 100%;
 }
