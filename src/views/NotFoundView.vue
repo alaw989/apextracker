@@ -76,12 +76,20 @@ function goToHome() {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .not-found-content {
+    padding: var(--spacing-xl) var(--spacing-md);
+  }
+
   .not-found-title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 
   .not-found-message {
     font-size: 0.875rem;
+  }
+
+  .not-found-button {
+    width: 100%; /* Full-width button for easy tapping on mobile */
   }
 }
 </style>
