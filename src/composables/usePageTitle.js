@@ -40,6 +40,9 @@ export function usePageTitle() {
    * @returns {string|null} Player name or null
    */
   function getPlayerName(route) {
+    // Guard: route may be undefined during initial app setup
+    if (!route) return null
+
     // First try actual API data from store
     if (route.name === 'player' && playerStore.data?.name) {
       return playerStore.data.name
@@ -57,6 +60,9 @@ export function usePageTitle() {
    * @param {Object} route - Vue route object
    */
   function updateTitle(route) {
+    // Guard: route may be undefined during initial app setup
+    if (!route || !route.name) return
+
     switch (route.name) {
       case 'home':
         title.value = 'Apex Legends Stats Tracker - Lookup Player Ranks & Stats'
@@ -82,7 +88,7 @@ export function usePageTitle() {
 
   // Watch route name changes to update title
   watch(
-    () => route.name,
+    () => route?.name,
     (newName, oldName) => {
       if (newName !== oldName) {
         updateTitle(route)
@@ -96,8 +102,9 @@ export function usePageTitle() {
   watch(
     () => playerStore.data?.name,
     (newName, oldName) => {
+      // Guard: route may be undefined during initial app setup
       // Only update if we're on player route and name actually changed
-      if (route.name === 'player' && newName && newName !== oldName) {
+      if (route && route.name === 'player' && newName && newName !== oldName) {
         updateTitle(route)
       }
     }
