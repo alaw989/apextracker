@@ -11,30 +11,30 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 ## Current Position
 
 Phase: 1 of 4 (Core Lookup)
-Plan: 3 of 6 in current phase
+Plan: 5 of 6 in current phase
 Status: In progress
-Last activity: 2026-02-05 — Completed 01-03-PLAN.md (Search Interface)
+Last activity: 2026-02-05 — Completed 01-05-PLAN.md (Player Display Components)
 
-Progress: [████░░░░] 33% (2/6 plans complete in Phase 1)
+Progress: [████░░░░] 67% (4/6 plans complete in Phase 1)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
+- Total plans completed: 4
 - Average duration: 5 min
-- Total execution time: 9 minutes
+- Total execution time: 20 minutes
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1. Core Lookup | 2/6 | 9 min | 5 min |
+| 1. Core Lookup | 4/6 | 20 min | 5 min |
 | 2. Visual Polish | 0/2 | - | - |
 | 3. SEO & Sharing | 0/4 | - | - |
 | 4. Performance | 0/3 | - | - |
 
 **Recent Trend:**
-- Last 2 plans: 01-02 (5min), 01-03 (4min)
+- Last 4 plans: 01-01 (5min), 01-02 (5min), 01-04 (4min), 01-05 (6min)
 - Trend: Steady progress
 
 *Updated after each plan completion*
@@ -58,6 +58,13 @@ Recent decisions affecting current work:
 - [01-03]: Inline SVG icons for platforms instead of external image files for faster loading
 - [01-03]: SearchInput emits submit event on Enter key for intuitive UX
 - [01-03]: PlatformSelect defaults to 'origin' (PC) as most common platform
+- [01-04]: Separate fetchPlayerStats utility for testability and reusability
+- [01-04]: searchLoading state separate from general loading for better UX
+- [01-04]: Data transformation in store rather than API utility for single responsibility
+- [01-05]: Vertical list layout for stats (per CONTEXT.md decision) - NOT grid or cards
+- [01-05]: Favorite badge (star + text) for top legend only (index 0)
+- [01-05]: Image error handling with initials fallback for avatars and legends
+- [01-05]: Stacked legend cards on mobile, side-by-side grid on tablet+
 
 ### Pending Todos
 
@@ -70,5 +77,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-05
-Stopped at: Completed 01-03-PLAN.md (Search Interface)
+Stopped at: Completed 01-05-PLAN.md (Player Display Components)
 Resume file: None
