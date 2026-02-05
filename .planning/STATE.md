@@ -6,35 +6,35 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 
 **Core value:** Fast, accurate stat lookup that gives Apex players immediate insight into their performance and keeps them coming back to track their progress.
 
-**Current focus:** Phase 1 - Core Lookup (Vue SPA rewrite)
+**Current focus:** Phase 2 - Visual Polish
 
 ## Current Position
 
-Phase: 1 of 4 (Core Lookup)
-Plan: 6 of 6 in current phase
-Status: Phase complete
-Last activity: 2026-02-05 — Completed 01-06-PLAN.md (Loading and Error States)
+Phase: 2 of 4 (Visual Polish)
+Plan: 1 of 2 in current phase
+Status: In progress
+Last activity: 2026-02-05 — Completed 02-01-PLAN.md (Dynamic Background System)
 
-Progress: [██████░░] 100% (6/6 plans complete in Phase 1)
+Progress: [██████░░] 62.5% (7/11 plans complete)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
+- Total plans completed: 7
 - Average duration: 5 min
-- Total execution time: 30 minutes
+- Total execution time: 35 minutes
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1. Core Lookup | 6/6 | 30 min | 5 min |
-| 2. Visual Polish | 0/2 | - | - |
+| 2. Visual Polish | 1/2 | 5 min | 5 min |
 | 3. SEO & Sharing | 0/4 | - | - |
 | 4. Performance | 0/3 | - | - |
 
 **Recent Trend:**
-- Last 6 plans: 01-01 (5min), 01-02 (5min), 01-04 (4min), 01-05 (6min), 01-06 (5min)
+- Last 6 plans: 01-01 (5min), 01-02 (5min), 01-04 (4min), 01-05 (6min), 01-06 (5min), 02-01 (5min)
 - Trend: Steady progress
 
 *Updated after each plan completion*
@@ -69,6 +69,9 @@ Recent decisions affecting current work:
 - [01-06]: State-based rendering order: loading -> error -> data -> empty
 - [01-06]: Search history stored after successful fetch only
 - [01-06]: Error helper text displayed below error message for better UX
+- [02-01]: Vue Transition with mode="out-in" for sequential background crossfade
+- [02-01]: Reactive backgroundKey pattern to force Transition re-render on content changes
+- [02-01]: Dark overlay gradient (rgba 15,23,42, 0.85-0.95) for text readability over backgrounds
 
 ### Pending Todos
 
@@ -81,5 +84,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-05
-Stopped at: Completed 01-06-PLAN.md (Loading and Error States) - Phase 1 complete
+Stopped at: Completed 02-01-PLAN.md (Dynamic Background System)
 Resume file: None
