@@ -185,8 +185,8 @@ const showFavoriteBadge = computed(() => props.isFavorite === true)
   letter-spacing: 0.05em;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 480px) {
+/* Mobile responsiveness - 768px breakpoint per 03-CONTEXT.md */
+@media (max-width: 768px) {
   .legend-card__name {
     font-size: 1rem;
   }
@@ -196,7 +196,7 @@ const showFavoriteBadge = computed(() => props.isFavorite === true)
   }
 
   .legend-card__kills-label {
-    font-size: 0.75rem;
+    font-size: 0.875rem; /* Minimum 14px for readability */
   }
 
   .legend-card__badge {
