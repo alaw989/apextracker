@@ -67,7 +67,7 @@ function handleKeydown(event, index) {
 </script>
 
 <template>
-  <div class="platform-select">
+  <div class="platform-select" role="group" aria-label="Select gaming platform">
     <button
       v-for="(platform, index) in PLATFORMS"
       :key="platform.id"

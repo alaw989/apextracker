@@ -10,6 +10,7 @@
  * @emits click - Emitted when button is clicked (not if disabled/loading)
  */
 
+import { computed } from 'vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
 
 const props = defineProps({
@@ -20,10 +21,25 @@ const props = defineProps({
   disabled: {
     type: Boolean,
     default: false
+  },
+  ariaLabel: {
+    type: String,
+    default: 'Search for player'
+  },
+  loadingLabel: {
+    type: String,
+    default: 'Searching...'
   }
 })
 
 const emit = defineEmits(['click'])
+
+/**
+ * Computed aria-label based on loading state
+ */
+const computedAriaLabel = computed(() => {
+  return props.loading ? props.loadingLabel : props.ariaLabel
+})
 
 /**
  * Handle button click
@@ -42,6 +58,7 @@ function handleClick(event) {
     variant="primary"
     :disabled="disabled || loading"
     :loading="loading"
+    :aria-label="computedAriaLabel"
     @click="handleClick"
   >
     <slot />

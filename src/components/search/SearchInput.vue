@@ -21,6 +21,10 @@ const props = defineProps({
   placeholder: {
     type: String,
     default: 'Apex Username'
+  },
+  ariaLabel: {
+    type: String,
+    default: 'Player username search'
   }
 })
 
@@ -66,6 +70,7 @@ function handleBlur(event) {
     <input
       :value="modelValue"
       :placeholder="placeholder"
+      :aria-label="ariaLabel"
       type="text"
       class="search-input__field"
       @input="handleInput"
