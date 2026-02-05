@@ -36,30 +36,32 @@ watch(() => props.stats, () => {
     :key="animKey"
     appear
   >
-    <BaseCard v-if="hasStats" class="stats-list">
-      <template #header>
-        <h3 class="stats-list__header">Stats Overview</h3>
-      </template>
+    <template #default>
+      <BaseCard v-if="hasStats" class="stats-list">
+        <template #header>
+          <h3 class="stats-list__header">Stats Overview</h3>
+        </template>
 
-      <div class="stats-list__content">
-        <div
-          v-for="(stat, index) in stats"
-          :key="`stat-${index}-${stat.subtitle}`"
-          class="stats-list__row"
-          :class="{ 'stats-list__row--last': index === stats.length - 1 }"
-        >
-          <span class="stats-list__label">{{ stat.subtitle }}</span>
-          <span class="stats-list__value">{{ stat.stat }}</span>
+        <div class="stats-list__content">
+          <div
+            v-for="(stat, index) in stats"
+            :key="`stat-${index}-${stat.subtitle}`"
+            class="stats-list__row"
+            :class="{ 'stats-list__row--last': index === stats.length - 1 }"
+          >
+            <span class="stats-list__label">{{ stat.subtitle }}</span>
+            <span class="stats-list__value">{{ stat.stat }}</span>
+          </div>
         </div>
-      </div>
-    </BaseCard>
-  </Transition>
+      </BaseCard>
 
-  <BaseCard v-else class="stats-list stats-list--empty">
-    <div class="stats-list__empty">
-      <p>No stats available</p>
-    </div>
-  </BaseCard>
+      <BaseCard v-else class="stats-list stats-list--empty">
+        <div class="stats-list__empty">
+          <p>No stats available</p>
+        </div>
+      </BaseCard>
+    </template>
+  </Transition>
 </template>
 
 <style scoped>
@@ -124,8 +126,12 @@ watch(() => props.stats, () => {
   font-size: 0.875rem;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 480px) {
+/* Mobile responsiveness - 768px breakpoint per 03-CONTEXT.md */
+@media (max-width: 768px) {
+  .stats-list {
+    gap: var(--spacing-sm);
+  }
+
   .stats-list__header {
     font-size: 0.875rem;
   }
@@ -135,7 +141,7 @@ watch(() => props.stats, () => {
   }
 
   .stats-list__label {
-    font-size: 0.8125rem;
+    font-size: 0.875rem; /* Minimum 14px for readability */
   }
 
   .stats-list__value {
