@@ -49,4 +49,18 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
   --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.25);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.3);
+
+  /* Breakpoints (from 03-CONTEXT.md) */
+  --breakpoint-mobile: 768px;
+  --breakpoint-tablet: 1024px;
+  --breakpoint-desktop: 1280px;
+
+  /* Mobile-specific spacing */
+  --spacing-mobile-sm: 0.5rem;
+  --spacing-mobile-md: 0.75rem;
+  --spacing-mobile-lg: 1rem;
+  --spacing-mobile-xl: 1.5rem;
+
+  /* Touch target size (WCAG minimum: 44x44px) */
+  --touch-target-min: 44px;
 }
