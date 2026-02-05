@@ -12,113 +12,29 @@ Vue SPA rewrite of the existing React stat lookup application. The roadmap progr
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [x] **Phase 1: Core Lookup** - Vue stat lookup with search and display ✓
-- [x] **Phase 2: Visual Polish** - Dynamic backgrounds and smooth animations ✓
-- [x] **Phase 3: SEO & Sharing** - Shareable URLs and discoverability ✓
-- [x] **Phase 4: Performance** - Caching and asset optimization ✓
+<details>
+<summary>✅ v1.0 MVP (Phases 1-4) — SHIPPED 2026-02-05</summary>
 
-## Phase Details
+**Full details:** See [.planning/milestones/v1.0-ROADMAP.md](.planning/milestones/v1.0-ROADMAP.md)
 
-### Phase 1: Core Lookup
+- [x] Phase 1: Core Lookup (6/6 plans) — completed 2026-02-04
+- [x] Phase 2: Visual Polish (2/2 plans) — completed 2026-02-05
+- [x] Phase 3: SEO & Sharing (7/7 plans) — completed 2026-02-05
+- [x] Phase 4: Performance (3/3 plans) — completed 2026-02-05
 
-**Goal**: Players can search for Apex Legends stats and see their rank, avatar, kills, and favorite legends in a Vue SPA.
+</details>
 
-**Depends on**: Nothing (first phase)
+### 📋 Next Milestone (Planned)
 
-**Requirements**: CORE-01, CORE-02, CORE-03, CORE-04, CORE-06, UX-04
-
-**Success Criteria** (what must be TRUE):
-1. User can enter a username, select a platform (Xbox/PSN/PC), and search for their stats
-2. User sees their player rank icon, avatar, and overview stats (kills, wins, etc.)
-3. User sees their top 2 legends by kills with the favorite legend visually highlighted
-4. User sees a helpful error message when the player is not found (invalid username or no data)
-5. User sees a loading indicator while data is being fetched
-
-**Plans**: 6 plans in 3 waves
-
-Plans:
-- [x] 01-01-PLAN.md — Initialize Vue 3 + Vite project with Pinia state management and design system foundation
-- [x] 01-02-PLAN.md — Create utility functions, constants, and assets needed for API integration and platform selection
-- [x] 01-03-PLAN.md — Build the search interface with username input, platform selector, and search button
-- [x] 01-04-PLAN.md — Implement API integration with Tracker.gg to fetch player stats via Heroku proxy
-- [x] 01-05-PLAN.md — Create player stats display components: player header, overview stats list, and favorite legends
-- [x] 01-06-PLAN.md — Add loading and error states for the search and display flow
-
-### Phase 2: Visual Polish
-
-**Goal**: The app feels polished with dynamic backgrounds that react to the player's favorite legend and smooth stat card animations.
-
-**Depends on**: Phase 1
-
-**Requirements**: CORE-05, UX-03
-
-**Success Criteria** (what must be TRUE):
-1. Background changes dynamically based on the player's favorite legend (each legend has unique themed background)
-2. Stat cards animate smoothly when appearing (fade/slide transitions)
-3. Animations replay cleanly when searching for a new player
-
-**Plans**: 2 plans in 1 wave
-
-Plans:
-- [x] 02-01-PLAN.md — Dynamic background system tied to favorite legend with Vue Transition crossfade
-- [x] 02-02-PLAN.md — Stat card transition animations using Vue Transition and TransitionGroup components
-
-### Phase 3: SEO & Sharing
-
-**Goal**: Players can share their stats via URL and the app is discoverable through search engines and social media.
-
-**Depends on**: Phase 2
-
-**Requirements**: SEO-01, SEO-02, SEO-03, SEO-04, UX-01
-
-**Success Criteria** (what must be TRUE):
-1. User can share their stats via a URL containing username and platform (e.g., /player/username/pc)
-2. Page structure uses semantic HTML (header, main, nav) for search crawlers
-3. Page has descriptive title and meta description for each profile view
-4. App displays correctly on mobile devices (responsive layout)
-
-**Plans**: 7 plans in 3 waves
-
-Plans:
-- [x] 03-01-PLAN.md — Vue Router 4 integration with shareable profile URLs (/player/:username/:platform)
-- [x] 03-02-PLAN.md — Dynamic page titles using VueUse useTitle() for SEO
-- [x] 03-03-PLAN.md — Semantic HTML structure for search crawlers
-- [x] 03-04-PLAN.md — Mobile responsive styling foundations with 768px breakpoint
-- [x] 03-05-PLAN.md — ShareButton component with clipboard integration
-- [x] 03-06-PLAN.md — Schema.org structured data and accessibility improvements
-- [x] 03-07-PLAN.md — Component-specific mobile refinements
-
-### Phase 4: Performance
-
-**Goal**: The app loads quickly and makes efficient use of the Tracker.gg API to avoid rate limits.
-
-**Depends on**: Phase 3
-
-**Requirements**: PERF-01, PERF-02, PERF-03, UX-02
-
-**Success Criteria** (what must be TRUE):
-1. Repeated searches for the same player use cached data (no redundant API calls)
-2. Page loads in under 2 seconds on a typical connection
-3. Images (rank icons, avatars, legend art) are lazy-loaded
-4. Production build assets are minified and compressed
-
-**Plans**: 3 plans in 2 waves
-
-Plans:
-- [x] 04-01-PLAN.md — API response caching with stale-while-revalidate pattern ✓
-- [x] 04-02-PLAN.md — Lazy loading for images using IntersectionObserver ✓
-- [x] 04-03-PLAN.md — Build optimization with code splitting and bundle analysis ✓
+No phases planned yet. Run `/gsd:new-milestone` to begin planning the next milestone.
 
 ## Progress
 
-**Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4
-
-| Phase | Plans Complete | Status | Completed |
-|-------|----------------|--------|-----------|
-| 1. Core Lookup | 6/6 | Complete | 2026-02-04 |
-| 2. Visual Polish | 2/2 | Complete | 2026-02-05 |
-| 3. SEO & Sharing | 7/7 | Complete | 2026-02-05 |
-| 4. Performance | 3/3 | Complete | 2026-02-05 |
+| Phase             | Milestone | Plans Complete | Status      | Completed  |
+| ----------------- | --------- | -------------- | ----------- | ---------- |
+| 1. Core Lookup    | v1.0      | 6/6            | Complete    | 2026-02-04 |
+| 2. Visual Polish  | v1.0      | 2/2            | Complete    | 2026-02-05 |
+| 3. SEO & Sharing  | v1.0      | 7/7            | Complete    | 2026-02-05 |
+| 4. Performance    | v1.0      | 3/3            | Complete    | 2026-02-05 |
 
 **Overall Progress:** 19/19 plans complete (100%)

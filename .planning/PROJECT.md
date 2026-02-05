@@ -2,7 +2,7 @@
 
 ## What This Is
 
-An Apex Legends player stats tracker that helps players look up their rankings, kill counts, and performance data. Players search by username and platform to see their current stats and favorite legends. The product will evolve from a simple stat lookup into a feature-rich platform with user accounts, history tracking, and legend guides - monetized through ads and affiliate links.
+An Apex Legends player stats tracker that helps players look up their rankings, kill counts, and performance data. Players search by username and platform to see their current stats and favorite legends. The product has evolved from a React app into a modern Vue 3 SPA and will continue to grow with user accounts, history tracking, and legend guides — monetized through ads and affiliate links.
 
 ## Core Value
 
@@ -12,16 +12,17 @@ Fast, accurate stat lookup that gives Apex players immediate insight into their 
 
 ### Validated
 
-- ✓ Player stat lookup via username and platform selection — existing
-- ✓ Display of player rank, avatar, and overview stats — existing
-- ✓ Top 2 legends by kills display — existing
-- ✓ Dynamic background based on favorite legend — existing
-- ✓ React SPA with animation support — existing
+- ✓ Player stat lookup via username and platform selection — v1.0
+- ✓ Display of player rank, avatar, and overview stats — v1.0
+- ✓ Top 2 legends by kills display — v1.0
+- ✓ Dynamic background based on favorite legend — v1.0
+- ✓ Vue SPA with modern build tooling — v1.0
+- ✓ Shareable URLs with SEO meta tags — v1.0
+- ✓ Mobile responsive design — v1.0
+- ✓ API caching and lazy loading — v1.0
 
 ### Active
 
-- [ ] Vue SPA rewrite — migrate from React to Vue for simpler mental model
-- [ ] Modernized tech stack — current dependencies are from 2019
 - [ ] User authentication — sign up, login, session management
 - [ ] Profile history tracking — store and visualize stat changes over time
 - [ ] User dashboard — manage multiple saved profiles
@@ -37,24 +38,31 @@ Fast, accurate stat lookup that gives Apex players immediate insight into their 
 
 ## Context
 
-**Existing Codebase:**
-- React 16.11 SPA with Create React App 3.2 (from 2019)
-- Bootstrap 4.3.1 for styling, react-spring for animations
-- Fetches data from Tracker.gg API via Heroku proxy
-- Component-based architecture with parent state management in App.js
-- All state is local (no database, no user accounts)
+**Current Codebase:**
+- Vue 3 SPA with Vite 6 build system (shipped v1.0)
+- Pinia state management with composition API pattern
+- Vue Router 4 with history mode for clean URLs
+- VueUse utilities (useTitle, useLocalStorage, etc.)
+- Semantic HTML5 with ARIA accessibility attributes
+- Mobile-first responsive design (768px breakpoint)
+- Tracker.gg API integration via Heroku proxy
+- localStorage-based API caching with stale-while-revalidate
+
+**v1.0 Stats:**
+- 4 phases, 19 plans completed
+- 4,542 lines of Vue/JavaScript code
+- Production bundle: ~55KB gzipped
+- ~16 hours calendar development time
 
 **Technical Debt:**
-- Outdated dependencies with security vulnerabilities
-- No TypeScript (pure JavaScript)
-- No backend infrastructure (static frontend only)
-- No data persistence (every lookup is fresh API call)
+- CSS variable naming inconsistency (LOW) — TimestampBadge/RefreshButton use --color-* prefix instead of defined --text-*/--bg-* variables
+- No backend infrastructure yet (static frontend only)
+- No data persistence beyond localStorage cache
 
 **User Motivation:**
-- Current app lacks features for a viable product
-- Want to build something with monetization potential
-- Vue preferred over React for simpler mental model
-- Progressive rollout approach — ship in phases
+- v1.0 MVP successfully shipped with modern Vue stack
+- Foundation ready for authentication and history features
+- Progressive rollout approach continues to prove effective
 
 ## Constraints
 
@@ -67,9 +75,12 @@ Fast, accurate stat lookup that gives Apex players immediate insight into their 
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Vue SPA rewrite | Simpler mental model than React hooks | — Pending |
-| Progressive rollout | Minimize risk, each phase adds value | — Pending |
+| Vue SPA rewrite | Simpler mental model than React hooks, modern tooling | ✓ Good — v1.0 shipped successfully |
+| Progressive rollout | Minimize risk, each phase adds value | ✓ Good — all 4 phases completed smoothly |
+| Vite 6 + esbuild | 20-40x faster builds than terser | ✓ Good — sub-2s build times achieved |
+| Stale-while-revalidate caching | Optimal UX with API rate limit protection | ✓ Good — users see instant results |
+| Manual code splitting | Vue vendor chunk for long-term caching | ✓ Good — ~55KB gzipped total transfer |
 | Ads/affiliate model | No need for payment infrastructure initially | — Pending |
 
 ---
-*Last updated: 2026-02-04 after initialization*
+*Last updated: 2026-02-05 after v1.0 milestone*
