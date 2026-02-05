@@ -5,7 +5,7 @@
  * @props {Array} legends - Array of legend objects with { name, imageUrl, kills }
  */
 
-import { computed } from 'vue'
+import { ref, watch, computed } from 'vue'
 import BaseCard from '@/components/ui/BaseCard.vue'
 import LegendCard from './LegendCard.vue'
 
@@ -24,20 +24,34 @@ const hasLegends = computed(() => {
 const topLegends = computed(() => {
   return props.legends.slice(0, 2)
 })
+
+// Force re-render trigger for replaying animations
+const animKey = ref(0)
+
+watch(() => props.legends, () => {
+  animKey.value++
+}, { immediate: true })
 </script>
 
 <template>
   <div v-if="hasLegends" class="favorite-legends">
     <h3 class="favorite-legends__header">Favorite Legends</h3>
-    <div class="favorite-legends__list">
+    <TransitionGroup
+      name="stagger"
+      tag="div"
+      :key="animKey"
+      class="favorite-legends__list"
+      appear
+    >
       <LegendCard
         v-for="(legend, index) in topLegends"
-        :key="`legend-${legend.name}-${index}`"
+        :key="`legend-${legend.name}-${animKey}`"
         :legend="legend"
         :is-favorite="index === 0"
+        :data-index="index"
         class="favorite-legends__item"
       />
-    </div>
+    </TransitionGroup>
   </div>
 
   <BaseCard v-else class="favorite-legends favorite-legends--empty">
@@ -48,6 +62,7 @@ const topLegends = computed(() => {
 </template>
 
 <style scoped>
+@import '@/style/transitions.css';
 .favorite-legends {
   width: 100%;
 }
