@@ -48,7 +48,7 @@ const showFavoriteBadge = computed(() => props.isFavorite === true)
         <img
           v-if="imageUrl && !imageError"
           :src="imageUrl"
-          :alt="`${legendName} legend`"
+          :alt="`${legendName} legend art`"
           class="legend-card__image"
           @error="handleImageError"
         />
