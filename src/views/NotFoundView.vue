@@ -20,10 +20,9 @@ function goToHome() {
 </script>
 
 <template>
-  <div class="not-found-view">
+  <main class="not-found-view">
     <div class="not-found-content">
-      <h1 class="not-found-title">404</h1>
-      <h2 class="not-found-heading">Player Not Found</h2>
+      <h1 class="not-found-title">404 - Player Not Found</h1>
       <p class="not-found-message">
         The player you're looking for doesn't exist on this platform.
       </p>
@@ -35,7 +34,7 @@ function goToHome() {
         Search for Another Player
       </BaseButton>
     </div>
-  </div>
+  </main>
 </template>
 
 <style scoped>
@@ -54,19 +53,12 @@ function goToHome() {
 }
 
 .not-found-title {
-  font-size: 6rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  color: var(--accent-primary);
-  margin: 0 0 var(--spacing-md) 0;
-  line-height: 1;
-  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-}
-
-.not-found-heading {
-  font-size: 1.5rem;
-  font-weight: 600;
   color: var(--text-primary);
   margin: 0 0 var(--spacing-md) 0;
+  line-height: 1.2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -85,11 +77,7 @@ function goToHome() {
 /* Responsive Design */
 @media (max-width: 768px) {
   .not-found-title {
-    font-size: 4rem;
-  }
-
-  .not-found-heading {
-    font-size: 1.25rem;
+    font-size: 1.75rem;
   }
 
   .not-found-message {
