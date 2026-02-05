@@ -268,8 +268,13 @@ playerStore.clearPlayer()
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .player-view {
+    padding: var(--spacing-md);
+  }
+
   .quick-search {
     flex-wrap: wrap;
+    margin-bottom: var(--spacing-md);
   }
 
   .quick-search__input,
@@ -280,6 +285,23 @@ playerStore.clearPlayer()
 
   .quick-search__platform {
     order: -1;
+  }
+
+  .content-area {
+    margin-top: var(--spacing-md);
+  }
+
+  .error-container {
+    padding: var(--spacing-md);
+  }
+
+  .back-button {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .player-section {
+    margin-top: var(--spacing-md);
   }
 }
 </style>
