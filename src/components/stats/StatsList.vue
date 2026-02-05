@@ -8,7 +8,7 @@
  * @props {Array} stats - Array of stat objects with { subtitle, stat }
  */
 
-import { computed } from 'vue'
+import { ref, watch, computed } from 'vue'
 import BaseCard from '@/components/ui/BaseCard.vue'
 
 const props = defineProps({
@@ -21,26 +21,39 @@ const props = defineProps({
 const hasStats = computed(() => {
   return props.stats && props.stats.length > 0
 })
+
+// Force re-render trigger for replaying animations
+const animKey = ref(0)
+
+watch(() => props.stats, () => {
+  animKey.value++
+}, { immediate: true })
 </script>
 
 <template>
-  <BaseCard v-if="hasStats" class="stats-list">
-    <template #header>
-      <h3 class="stats-list__header">Stats Overview</h3>
-    </template>
+  <Transition
+    name="card-appear"
+    :key="animKey"
+    appear
+  >
+    <BaseCard v-if="hasStats" class="stats-list">
+      <template #header>
+        <h3 class="stats-list__header">Stats Overview</h3>
+      </template>
 
-    <div class="stats-list__content">
-      <div
-        v-for="(stat, index) in stats"
-        :key="`stat-${index}-${stat.subtitle}`"
-        class="stats-list__row"
-        :class="{ 'stats-list__row--last': index === stats.length - 1 }"
-      >
-        <span class="stats-list__label">{{ stat.subtitle }}</span>
-        <span class="stats-list__value">{{ stat.stat }}</span>
+      <div class="stats-list__content">
+        <div
+          v-for="(stat, index) in stats"
+          :key="`stat-${index}-${stat.subtitle}`"
+          class="stats-list__row"
+          :class="{ 'stats-list__row--last': index === stats.length - 1 }"
+        >
+          <span class="stats-list__label">{{ stat.subtitle }}</span>
+          <span class="stats-list__value">{{ stat.stat }}</span>
+        </div>
       </div>
-    </div>
-  </BaseCard>
+    </BaseCard>
+  </Transition>
 
   <BaseCard v-else class="stats-list stats-list--empty">
     <div class="stats-list__empty">
@@ -50,6 +63,7 @@ const hasStats = computed(() => {
 </template>
 
 <style scoped>
+@import '@/style/transitions.css';
 .stats-list {
   width: 100%;
 }
