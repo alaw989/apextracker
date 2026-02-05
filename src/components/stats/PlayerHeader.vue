@@ -8,7 +8,7 @@
  * @props {string} player.rankIcon - Rank icon image URL
  */
 
-import { ref, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import BaseCard from '@/components/ui/BaseCard.vue'
 
 const props = defineProps({
@@ -23,6 +23,10 @@ const props = defineProps({
     }
   }
 })
+
+// Schema.org: Player image URL for itemprop
+const playerImage = computed(() => props.player?.avatar || '')
+const playerRankName = computed(() => props.player?.rankName || 'Unranked')
 
 // Force re-render trigger for replaying animations
 const animKey = ref(0)
@@ -61,6 +65,7 @@ const playerName = props.player?.name
             :src="avatarUrl"
             :alt="`${playerName} avatar`"
             class="player-header__avatar-img"
+            itemprop="image"
             @error="handleAvatarError"
           />
           <div v-else class="player-header__avatar-placeholder">
@@ -78,7 +83,7 @@ const playerName = props.player?.name
           <img
             v-if="rankIconUrl && !rankError"
             :src="rankIconUrl"
-            alt="Rank"
+            :alt="`${playerRankName} rank icon`"
             class="player-header__rank-icon"
             @error="handleRankError"
           />
