@@ -97,8 +97,8 @@ watch(() => props.legends, () => {
   font-size: 0.875rem;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 480px) {
+/* Mobile responsiveness - 768px breakpoint per 03-CONTEXT.md */
+@media (max-width: 768px) {
   .favorite-legends__header {
     font-size: 0.875rem;
     margin-bottom: var(--spacing-sm);
@@ -107,10 +107,15 @@ watch(() => props.legends, () => {
   .favorite-legends__list {
     gap: var(--spacing-sm);
   }
+
+  /* Legend cards remain full-width with vertical stacking on mobile */
+  .favorite-legends__item {
+    width: 100%;
+  }
 }
 
-/* Tablet/desktop: optionally show legends side-by-side */
-@media (min-width: 640px) {
+/* Tablet/desktop: show legends side-by-side */
+@media (min-width: 769px) {
   .favorite-legends__list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
