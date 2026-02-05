@@ -249,8 +249,20 @@ async function handleSearch() {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .home-view {
+    padding: var(--spacing-md);
+  }
+
+  .home-view__header {
+    margin-bottom: var(--spacing-lg);
+  }
+
   .home-view__title {
     font-size: 1.25rem;
+  }
+
+  .home-view__subtitle {
+    font-size: 0.875rem;
   }
 
   .search-form {
@@ -266,6 +278,10 @@ async function handleSearch() {
 
   .search-form__platform {
     order: -1;
+  }
+
+  .empty-state {
+    padding: var(--spacing-lg) var(--spacing-md);
   }
 }
 </style>
