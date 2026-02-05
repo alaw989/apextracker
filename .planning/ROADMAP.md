@@ -12,7 +12,7 @@ Vue SPA rewrite of the existing React stat lookup application. The roadmap progr
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Core Lookup** - Vue stat lookup with search and display
+- [x] **Phase 1: Core Lookup** - Vue stat lookup with search and display ✓
 - [ ] **Phase 2: Visual Polish** - Dynamic backgrounds and smooth animations
 - [ ] **Phase 3: SEO & Sharing** - Shareable URLs and discoverability
 - [ ] **Phase 4: Performance** - Caching and asset optimization
@@ -114,9 +114,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Core Lookup | 0/6 | Ready to execute | - |
-| 2. Visual Polish | 0/2 | Not started | - |
+| 1. Core Lookup | 6/6 | ✓ Complete | 2026-02-04 |
+| 2. Visual Polish | 0/2 | Next | - |
 | 3. SEO & Sharing | 0/4 | Not started | - |
 | 4. Performance | 0/3 | Not started | - |
 
-**Overall Progress:** 0/15 plans complete (0%)
+**Overall Progress:** 6/15 plans complete (40%)

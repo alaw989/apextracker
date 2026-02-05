@@ -9,19 +9,19 @@ Requirements for Vue rewrite with quality foundation. Each maps to roadmap phase
 
 ### Core Lookup
 
-- [ ] **CORE-01**: User can search for player by username
-- [ ] **CORE-02**: User can select platform (Xbox, PSN, PC)
-- [ ] **CORE-03**: User sees player rank, avatar, and overview stats
-- [ ] **CORE-04**: User sees top 2 legends by kills with favorite legend highlighted
+- [x] **CORE-01**: User can search for player by username ✓
+- [x] **CORE-02**: User can select platform (Xbox, PSN, PC) ✓
+- [x] **CORE-03**: User sees player rank, avatar, and overview stats ✓
+- [x] **CORE-04**: User sees top 2 legends by kills with favorite legend highlighted ✓
 - [ ] **CORE-05**: Background changes dynamically based on favorite legend
-- [ ] **CORE-06**: User sees helpful error message when player not found
+- [x] **CORE-06**: User sees helpful error message when player not found ✓
 
 ### User Experience
 
 - [ ] **UX-01**: App is fully responsive on mobile devices
 - [ ] **UX-02**: Page loads in under 2 seconds on typical connection
 - [ ] **UX-03**: Smooth animations for stat card transitions
-- [ ] **UX-04**: Loading indicator during data fetch
+- [x] **UX-04**: Loading indicator during data fetch ✓
 
 ### SEO & Discoverability
 
@@ -85,16 +85,16 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| CORE-01 | Phase 1 | Pending |
-| CORE-02 | Phase 1 | Pending |
-| CORE-03 | Phase 1 | Pending |
-| CORE-04 | Phase 1 | Pending |
+| CORE-01 | Phase 1 | Complete |
+| CORE-02 | Phase 1 | Complete |
+| CORE-03 | Phase 1 | Complete |
+| CORE-04 | Phase 1 | Complete |
 | CORE-05 | Phase 2 | Pending |
-| CORE-06 | Phase 1 | Pending |
+| CORE-06 | Phase 1 | Complete |
 | UX-01 | Phase 3 | Pending |
 | UX-02 | Phase 4 | Pending |
 | UX-03 | Phase 2 | Pending |
-| UX-04 | Phase 1 | Pending |
+| UX-04 | Phase 1 | Complete |
 | SEO-01 | Phase 3 | Pending |
 | SEO-02 | Phase 3 | Pending |
 | SEO-03 | Phase 3 | Pending |
