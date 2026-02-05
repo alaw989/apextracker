@@ -13,7 +13,7 @@ Vue SPA rewrite of the existing React stat lookup application. The roadmap progr
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Core Lookup** - Vue stat lookup with search and display ✓
-- [ ] **Phase 2: Visual Polish** - Dynamic backgrounds and smooth animations
+- [x] **Phase 2: Visual Polish** - Dynamic backgrounds and smooth animations ✓
 - [ ] **Phase 3: SEO & Sharing** - Shareable URLs and discoverability
 - [ ] **Phase 4: Performance** - Caching and asset optimization
 
@@ -37,12 +37,12 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 6 plans in 3 waves
 
 Plans:
-- [ ] 01-01-PLAN.md — Initialize Vue 3 + Vite project with Pinia state management and design system foundation
-- [ ] 01-02-PLAN.md — Create utility functions, constants, and assets needed for API integration and platform selection
-- [ ] 01-03-PLAN.md — Build the search interface with username input, platform selector, and search button
-- [ ] 01-04-PLAN.md — Implement API integration with Tracker.gg to fetch player stats via Heroku proxy
-- [ ] 01-05-PLAN.md — Create player stats display components: player header, overview stats list, and favorite legends
-- [ ] 01-06-PLAN.md — Add loading and error states for the search and display flow
+- [x] 01-01-PLAN.md — Initialize Vue 3 + Vite project with Pinia state management and design system foundation
+- [x] 01-02-PLAN.md — Create utility functions, constants, and assets needed for API integration and platform selection
+- [x] 01-03-PLAN.md — Build the search interface with username input, platform selector, and search button
+- [x] 01-04-PLAN.md — Implement API integration with Tracker.gg to fetch player stats via Heroku proxy
+- [x] 01-05-PLAN.md — Create player stats display components: player header, overview stats list, and favorite legends
+- [x] 01-06-PLAN.md — Add loading and error states for the search and display flow
 
 ### Phase 2: Visual Polish
 
@@ -60,8 +60,8 @@ Plans:
 **Plans**: 2 plans in 1 wave
 
 Plans:
-- [ ] 02-01-PLAN.md — Dynamic background system tied to favorite legend with Vue Transition crossfade
-- [ ] 02-02-PLAN.md — Stat card transition animations using Vue Transition and TransitionGroup components
+- [x] 02-01-PLAN.md — Dynamic background system tied to favorite legend with Vue Transition crossfade
+- [x] 02-02-PLAN.md — Stat card transition animations using Vue Transition and TransitionGroup components
 
 ### Phase 3: SEO & Sharing
 
@@ -115,8 +115,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Core Lookup | 6/6 | Complete | 2026-02-04 |
-| 2. Visual Polish | 0/2 | Ready | - |
+| 2. Visual Polish | 2/2 | Complete | 2026-02-05 |
 | 3. SEO & Sharing | 0/4 | Not started | - |
 | 4. Performance | 0/3 | Not started | - |
 
-**Overall Progress:** 6/15 plans complete (40%)
+**Overall Progress:** 8/15 plans complete (53%)
