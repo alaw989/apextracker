@@ -44,6 +44,7 @@ function handleClick(e) {
       }
     ]"
     :disabled="disabled || loading"
+    :aria-busy="loading"
     @click="handleClick"
   >
     <span v-if="loading" class="base-button__spinner"></span>
