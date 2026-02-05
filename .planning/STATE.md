@@ -11,31 +11,31 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 ## Current Position
 
 Phase: 1 of 4 (Core Lookup)
-Plan: 2 of 6 in current phase
+Plan: 4 of 6 in current phase
 Status: In progress
-Last activity: 2026-02-05 — Completed 01-02-PLAN.md (Utilities and Assets)
+Last activity: 2026-02-05 — Completed 01-04-PLAN.md (API Integration)
 
-Progress: [██░░░░░░░░] 33% (2/6 plans complete in Phase 1)
+Progress: [███░░░░░░░] 50% (3/6 plans complete in Phase 1)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 2
+- Total plans completed: 3
 - Average duration: 5 min
-- Total execution time: 10 minutes
+- Total execution time: 14 minutes
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1. Core Lookup | 2/6 | 5 min | 5 min |
+| 1. Core Lookup | 3/6 | 14 min | 5 min |
 | 2. Visual Polish | 0/2 | - | - |
 | 3. SEO & Sharing | 0/4 | - | - |
 | 4. Performance | 0/3 | - | - |
 
 **Recent Trend:**
-- Last 2 plans: 01-01 (5min), 01-02 (5min)
-- Trend: Steady start
+- Last 3 plans: 01-01 (5min), 01-02 (5min), 01-04 (4min)
+- Trend: Steady progress
 
 *Updated after each plan completion*
 
@@ -55,6 +55,9 @@ Recent decisions affecting current work:
 - [01-02]: Use API v2 string slugs (origin, xbl, psn) instead of numeric codes
 - [01-02]: Store proxy URL as env var for easy migration to DigitalOcean
 - [01-02]: Use PlatformIcons wrapper with dynamic :is rendering for platform selection
+- [01-04]: Separate fetchPlayerStats utility for testability and reusability
+- [01-04]: searchLoading state separate from general loading for better UX
+- [01-04]: Data transformation in store rather than API utility for single responsibility
 
 ### Pending Todos
 
@@ -67,5 +70,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-05
-Stopped at: Completed 01-02-PLAN.md (Utilities and Assets - Constants, Icons, Backgrounds)
+Stopped at: Completed 01-04-PLAN.md (API Integration with Tracker.gg)
 Resume file: None
