@@ -6,11 +6,12 @@
  * Uses Pinia stores for state management and API calls.
  */
 
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { usePlayerStore } from '@/stores/player'
 import { useSearchStore } from '@/stores/search'
 import { useUiStore } from '@/stores/ui'
+import AppBackground from '@/components/visual/AppBackground.vue'
 import SearchInput from '@/components/search/SearchInput.vue'
 import PlatformSelect from '@/components/search/PlatformSelect.vue'
 import SearchButton from '@/components/search/SearchButton.vue'
@@ -31,6 +32,17 @@ const { searchLoading, error, data } = storeToRefs(playerStore)
 // Local search form state
 const username = ref('')
 const platform = ref('origin')
+
+/**
+ * Computed favorite legend from player data
+ * Returns the first legend (index 0) which is sorted by kills
+ */
+const favoriteLegend = computed(() => {
+  if (!data.value?.legends?.length) {
+    return null
+  }
+  return data.value.legends[0]
+})
 
 /**
  * Handle search form submission
@@ -58,6 +70,7 @@ async function handleSearch() {
 </script>
 
 <template>
+  <AppBackground :favorite-legend="favoriteLegend" />
   <div class="app">
     <div class="app__container">
       <!-- Header -->
