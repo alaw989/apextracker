@@ -102,12 +102,12 @@ Plans:
 3. Images (rank icons, avatars, legend art) are lazy-loaded
 4. Production build assets are minified and compressed
 
-**Plans**: TBD
+**Plans**: 3 plans in 2 waves
 
 Plans:
-- [ ] 04-01: API response caching (localStorage or in-memory cache)
-- [ ] 04-02: Lazy loading for images
-- [ ] 04-03: Build optimization (minification, compression, bundle analysis)
+- [ ] 04-01-PLAN.md — API response caching with stale-while-revalidate pattern
+- [ ] 04-02-PLAN.md — Lazy loading for images using IntersectionObserver
+- [ ] 04-03-PLAN.md — Build optimization with code splitting and bundle analysis
 
 ## Progress
 
@@ -119,6 +119,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 | 1. Core Lookup | 6/6 | Complete | 2026-02-04 |
 | 2. Visual Polish | 2/2 | Complete | 2026-02-05 |
 | 3. SEO & Sharing | 7/7 | Complete | 2026-02-05 |
-| 4. Performance | 0/3 | Not started | - |
+| 4. Performance | 0/3 | Ready to start | - |
 
 **Overall Progress:** 15/19 plans complete (79%)
