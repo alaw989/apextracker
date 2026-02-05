@@ -178,15 +178,24 @@ playerStore.clearPlayer()
     <template v-else-if="data">
       <!-- Player Info Header -->
       <header class="player-section">
-        <h1 class="visually-hidden" itemprop="name">{{ data.name }}</h1>
-        <PlayerHeader
-          :player="{
-            name: data.name,
-            avatar: data.avatar,
-            rankIcon: data.rankIcon,
-            platformName: platformName
-          }"
-        />
+        <div class="player-header-wrapper">
+          <div class="player-header-content">
+            <h1 class="visually-hidden" itemprop="name">{{ data.name }}</h1>
+            <PlayerHeader
+              :player="{
+                name: data.name,
+                avatar: data.avatar,
+                rankIcon: data.rankIcon,
+                platformName: platformName
+              }"
+            />
+          </div>
+          <ShareButton
+            :username="username"
+            :platform="platform"
+            class="share-button-wrapper"
+          />
+        </div>
         <meta itemprop="affiliation" :content="platformName" />
       </header>
 
@@ -278,6 +287,23 @@ playerStore.clearPlayer()
   width: 100%;
 }
 
+.player-header-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.player-header-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.share-button-wrapper {
+  flex-shrink: 0;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .player-view {
@@ -314,6 +340,15 @@ playerStore.clearPlayer()
 
   .player-section {
     margin-top: var(--spacing-md);
+  }
+
+  .player-header-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .share-button-wrapper {
+    width: 100%;
   }
 }
 </style>
