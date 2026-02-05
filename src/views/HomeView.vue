@@ -66,23 +66,26 @@ async function handleSearch() {
 </script>
 
 <template>
-  <div class="home-view">
-    <!-- Header -->
+  <main class="home-view">
+    <!-- Page Header -->
     <header class="home-view__header">
-      <h1 class="home-view__title">CHECK PLAYER RANK AND STATS</h1>
+      <h1 class="home-view__title">Apex Legends Stats Tracker</h1>
+      <p class="home-view__subtitle">Search for player ranks and statistics</p>
     </header>
 
-    <!-- Search Form -->
-    <div class="search-section">
+    <!-- Player Search Form Section -->
+    <section aria-label="Player search form" class="search-section">
       <div class="search-form">
         <SearchInput
           v-model="username"
           placeholder="Apex Username"
+          aria-label="Enter Apex Legends username"
           @submit="handleSearch"
           class="search-form__input"
         />
         <PlatformSelect
           v-model="platform"
+          aria-label="Select gaming platform"
           class="search-form__platform"
         />
         <SearchButton
@@ -90,6 +93,7 @@ async function handleSearch() {
           :disabled="!username.trim()"
           @click="handleSearch"
           class="search-form__button"
+          aria-label="Search for player"
         >
           Search
         </SearchButton>
@@ -102,7 +106,7 @@ async function handleSearch() {
         type="error"
         class="search-error"
       />
-    </div>
+    </section>
 
     <!-- Loading State -->
     <div v-if="searchLoading" class="content-area">
@@ -118,14 +122,14 @@ async function handleSearch() {
 
     <!-- Empty State -->
     <div v-else class="empty-state">
-      <svg class="empty-state__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <svg class="empty-state__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
         <circle cx="11" cy="11" r="8"/>
         <path d="m21 21-4.35-4.35"/>
       </svg>
-      <h3 class="empty-state__title">Search for a Player</h3>
+      <h2 class="empty-state__title">Search for a Player</h2>
       <p class="empty-state__text">Enter an Apex Legends username and select a platform to view stats.</p>
     </div>
-  </div>
+  </main>
 </template>
 
 <style scoped>
@@ -144,8 +148,16 @@ async function handleSearch() {
   color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin: 0;
+  margin: 0 0 var(--spacing-sm) 0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.home-view__subtitle {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
 /* Search Section */
@@ -222,6 +234,8 @@ async function handleSearch() {
   font-weight: 600;
   color: var(--text-secondary);
   margin: 0 0 var(--spacing-sm) 0;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .empty-state__text {
