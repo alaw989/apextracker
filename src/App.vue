@@ -3,12 +3,23 @@ import { ref } from 'vue'
 import BaseCard from '@/components/ui/BaseCard.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import BaseInput from '@/components/ui/BaseInput.vue'
+import PlatformSelect from '@/components/search/PlatformSelect.vue'
+import SearchInput from '@/components/search/SearchInput.vue'
 
 // Simple state for testing components
 const username = ref('')
+const platform = ref('origin')
 
 function handleClick() {
   console.log('Button clicked! Username:', username.value)
+}
+
+function handlePlatformChange(value) {
+  console.log('Platform changed to:', value)
+}
+
+function handleSubmit() {
+  console.log('Search submitted for:', username.value, 'on', platform.value)
 }
 </script>
 
@@ -35,15 +46,32 @@ function handleClick() {
         </div>
 
         <div class="demo-section">
-          <h3>BaseInput</h3>
-          <BaseInput
-            id="username"
+          <h3>SearchInput</h3>
+          <SearchInput
             v-model="username"
-            type="text"
             placeholder="Enter Apex username..."
+            @submit="handleSubmit"
             class="input-demo"
           />
           <p class="input-value">Value: {{ username || '(empty)' }}</p>
+        </div>
+
+        <div class="demo-section">
+          <h3>PlatformSelect</h3>
+          <PlatformSelect v-model="platform" @update:model-value="handlePlatformChange" />
+          <p class="input-value">Selected: {{ platform }}</p>
+        </div>
+
+        <div class="demo-section">
+          <h3>SearchInput + PlatformSelect</h3>
+          <div class="search-form">
+            <SearchInput
+              v-model="username"
+              placeholder="Enter Apex username..."
+              @submit="handleSubmit"
+            />
+            <PlatformSelect v-model="platform" />
+          </div>
         </div>
 
         <template #footer>
@@ -123,5 +151,16 @@ function handleClick() {
   text-align: center;
   color: var(--text-muted);
   font-size: 0.875rem;
+}
+
+.search-form {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.search-form .search-input {
+  flex: 1;
+  min-width: 200px;
 }
 </style>
