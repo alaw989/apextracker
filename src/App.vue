@@ -1,115 +1,127 @@
 <script setup>
 import { ref } from 'vue'
-import PlatformIcons from './components/ui/PlatformIcons.vue'
+import BaseCard from '@/components/ui/BaseCard.vue'
+import BaseButton from '@/components/ui/BaseButton.vue'
+import BaseInput from '@/components/ui/BaseInput.vue'
 
-const selectedPlatform = ref('origin')
+// Simple state for testing components
+const username = ref('')
 
-function setPlatform(platform) {
-  selectedPlatform.value = platform
+function handleClick() {
+  console.log('Button clicked! Username:', username.value)
 }
 </script>
 
 <template>
   <div class="app">
-    <h1>Apex Tracker</h1>
-    <div class="card">
-      <h2>Platform Icons Test</h2>
-      <p>Selected: {{ selectedPlatform }}</p>
-      <div class="icons-container">
-        <div
-          class="platform-option"
-          :class="{ active: selectedPlatform === 'origin' }"
-          @click="setPlatform('origin')"
-        >
-          <PlatformIcons platform="origin" :width="32" :height="32" />
-          <span>PC</span>
+    <div class="app__container">
+      <h1 class="app__title">Apex Tracker</h1>
+      <p class="app__subtitle">Vue 3 + Vite + Pinia Design System</p>
+
+      <BaseCard class="app__card">
+        <template #header>
+          <h2>Base UI Components Demo</h2>
+        </template>
+
+        <div class="demo-section">
+          <h3>BaseButton</h3>
+          <div class="button-group">
+            <BaseButton variant="primary" @click="handleClick">Primary</BaseButton>
+            <BaseButton variant="secondary" @click="handleClick">Secondary</BaseButton>
+            <BaseButton variant="danger" @click="handleClick">Danger</BaseButton>
+            <BaseButton variant="primary" :loading="true">Loading</BaseButton>
+            <BaseButton variant="secondary" :disabled="true">Disabled</BaseButton>
+          </div>
         </div>
-        <div
-          class="platform-option"
-          :class="{ active: selectedPlatform === 'xbl' }"
-          @click="setPlatform('xbl')"
-        >
-          <PlatformIcons platform="xbl" :width="32" :height="32" />
-          <span>Xbox</span>
+
+        <div class="demo-section">
+          <h3>BaseInput</h3>
+          <BaseInput
+            id="username"
+            v-model="username"
+            type="text"
+            placeholder="Enter Apex username..."
+            class="input-demo"
+          />
+          <p class="input-value">Value: {{ username || '(empty)' }}</p>
         </div>
-        <div
-          class="platform-option"
-          :class="{ active: selectedPlatform === 'psn' }"
-          @click="setPlatform('psn')"
-        >
-          <PlatformIcons platform="psn" :width="32" :height="32" />
-          <span>PlayStation</span>
-        </div>
-      </div>
-      <p class="info">Platform icons are rendering correctly!</p>
+
+        <template #footer>
+          <p class="card-footer">Design system foundation is ready for Phase 1 development</p>
+        </template>
+      </BaseCard>
+
+      <BaseCard variant="elevated" class="app__card">
+        <h3>Card Variants</h3>
+        <p>BaseCard supports default, elevated, and outlined variants with header/footer slots.</p>
+      </BaseCard>
     </div>
   </div>
 </template>
 
 <style scoped>
 .app {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background: #24283c;
-  color: #fff;
+  padding: var(--spacing-2xl) var(--spacing-md);
 }
 
-h1 {
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
+.app__container {
+  width: 100%;
+  max-width: 600px;
 }
 
-h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: #CAD0E3;
-}
-
-.card {
-  padding: 2rem;
-  background: #424761;
-  border-radius: 8px;
+.app__title {
   text-align: center;
-  min-width: 300px;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
 }
 
-.icons-container {
+.app__subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-xl);
+}
+
+.app__card {
+  margin-bottom: var(--spacing-lg);
+}
+
+.demo-section {
+  margin-bottom: var(--spacing-lg);
+}
+
+.demo-section:last-child {
+  margin-bottom: 0;
+}
+
+.demo-section h3 {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-md);
+}
+
+.button-group {
   display: flex;
-  gap: 1.5rem;
-  justify-content: center;
-  margin: 1.5rem 0;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
 }
 
-.platform-option {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 1rem;
-  background: #24283c;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
+.input-demo {
+  margin-bottom: var(--spacing-sm);
 }
 
-.platform-option:hover,
-.platform-option.active {
-  background: #3c8772;
-  transform: scale(1.05);
-}
-
-.platform-option span {
+.input-value {
   font-size: 0.875rem;
-  color: #CAD0E3;
+  color: var(--text-muted);
+  font-family: monospace;
 }
 
-.info {
-  margin-top: 1rem;
-  color: #9aa5b1;
+.card-footer {
+  text-align: center;
+  color: var(--text-muted);
   font-size: 0.875rem;
 }
 </style>
