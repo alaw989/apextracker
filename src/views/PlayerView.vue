@@ -19,6 +19,8 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner.vue'
 import ErrorMessage from '@/components/ui/ErrorMessage.vue'
 import BaseButton from '@/components/ui/BaseButton.vue'
 import ShareButton from '@/components/ui/ShareButton.vue'
+import TimestampBadge from '@/components/ui/TimestampBadge.vue'
+import RefreshButton from '@/components/ui/RefreshButton.vue'
 import PlayerHeader from '@/components/stats/PlayerHeader.vue'
 import StatsList from '@/components/stats/StatsList.vue'
 import FavoriteLegends from '@/components/legends/FavoriteLegends.vue'
@@ -41,7 +43,7 @@ const router = useRouter()
 const playerStore = usePlayerStore()
 
 // Store refs for reactive access
-const { data, loading, error } = storeToRefs(playerStore)
+const { data, loading, error, cacheTimestamp, isRefreshing } = storeToRefs(playerStore)
 
 // Local search form state for quick new search
 const searchUsername = ref('')
@@ -103,6 +105,14 @@ async function handleNewSearch() {
  */
 function goToHome() {
   router.push({ name: 'home' })
+}
+
+/**
+ * Handle manual refresh button click
+ * Forces fresh data fetch bypassing cache
+ */
+async function handleRefresh() {
+  await playerStore.forceRefresh(props.username, props.platform)
 }
 
 /**
@@ -189,19 +199,36 @@ playerStore.clearPlayer()
                 platformName: platformName
               }"
             />
+            <div class="player-meta">
+              <TimestampBadge :timestamp="cacheTimestamp" />
+            </div>
           </div>
-          <ShareButton
-            :username="username"
-            :platform="platform"
-            class="share-button-wrapper"
-          />
+          <div class="header-actions">
+            <RefreshButton
+              :loading="isRefreshing"
+              @refresh="handleRefresh"
+              class="refresh-button-wrapper"
+            />
+            <ShareButton
+              :username="username"
+              :platform="platform"
+              class="share-button-wrapper"
+            />
+          </div>
         </div>
         <meta itemprop="affiliation" :content="platformName" />
       </header>
 
       <!-- Player Statistics Section -->
-      <section aria-labelledby="stats-heading" class="player-section">
-        <h2 id="stats-heading" class="visually-hidden">Player Statistics</h2>
+      <section aria-labelledby="stats-heading" class="player-section stats-section">
+        <div class="section-header">
+          <h2 id="stats-heading" class="visually-hidden">Player Statistics</h2>
+          <RefreshButton
+            :loading="isRefreshing"
+            @refresh="handleRefresh"
+            class="stats-refresh"
+          />
+        </div>
         <StatsList :stats="data.stats" />
       </section>
 
@@ -300,8 +327,30 @@ playerStore.clearPlayer()
   min-width: 0;
 }
 
+.player-meta {
+  margin-top: var(--spacing-sm);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-shrink: 0;
+}
+
 .share-button-wrapper {
   flex-shrink: 0;
+}
+
+.stats-section {
+  position: relative;
+}
+
+.section-header {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  z-index: 1;
 }
 
 /* Responsive Design */
@@ -347,8 +396,25 @@ playerStore.clearPlayer()
     align-items: stretch;
   }
 
-  .share-button-wrapper {
+  .player-meta {
+    margin-top: var(--spacing-md);
+  }
+
+  .header-actions {
+    justify-content: flex-end;
+    margin-top: var(--spacing-md);
     width: 100%;
+  }
+
+  .share-button-wrapper {
+    width: auto;
+  }
+
+  .section-header {
+    position: static;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: var(--spacing-sm);
   }
 }
 </style>
