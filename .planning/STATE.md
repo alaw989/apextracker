@@ -11,30 +11,30 @@ See: .planning/PROJECT.md (updated 2026-02-04)
 ## Current Position
 
 Phase: 1 of 4 (Core Lookup)
-Plan: 5 of 6 in current phase
-Status: In progress
-Last activity: 2026-02-05 — Completed 01-05-PLAN.md (Player Display Components)
+Plan: 6 of 6 in current phase
+Status: Phase complete
+Last activity: 2026-02-05 — Completed 01-06-PLAN.md (Loading and Error States)
 
-Progress: [████░░░░] 67% (4/6 plans complete in Phase 1)
+Progress: [██████░░] 100% (6/6 plans complete in Phase 1)
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 4
+- Total plans completed: 6
 - Average duration: 5 min
-- Total execution time: 20 minutes
+- Total execution time: 30 minutes
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 1. Core Lookup | 4/6 | 20 min | 5 min |
+| 1. Core Lookup | 6/6 | 30 min | 5 min |
 | 2. Visual Polish | 0/2 | - | - |
 | 3. SEO & Sharing | 0/4 | - | - |
 | 4. Performance | 0/3 | - | - |
 
 **Recent Trend:**
-- Last 4 plans: 01-01 (5min), 01-02 (5min), 01-04 (4min), 01-05 (6min)
+- Last 6 plans: 01-01 (5min), 01-02 (5min), 01-04 (4min), 01-05 (6min), 01-06 (5min)
 - Trend: Steady progress
 
 *Updated after each plan completion*
@@ -65,6 +65,10 @@ Recent decisions affecting current work:
 - [01-05]: Favorite badge (star + text) for top legend only (index 0)
 - [01-05]: Image error handling with initials fallback for avatars and legends
 - [01-05]: Stacked legend cards on mobile, side-by-side grid on tablet+
+- [01-06]: CSS-only loading spinner with rotation animation - no external library needed
+- [01-06]: State-based rendering order: loading -> error -> data -> empty
+- [01-06]: Search history stored after successful fetch only
+- [01-06]: Error helper text displayed below error message for better UX
 
 ### Pending Todos
 
@@ -77,5 +81,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-05
-Stopped at: Completed 01-05-PLAN.md (Player Display Components)
+Stopped at: Completed 01-06-PLAN.md (Loading and Error States) - Phase 1 complete
 Resume file: None
