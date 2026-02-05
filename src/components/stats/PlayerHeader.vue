@@ -8,7 +8,7 @@
  * @props {string} player.rankIcon - Rank icon image URL
  */
 
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import BaseCard from '@/components/ui/BaseCard.vue'
 
 const props = defineProps({
@@ -23,6 +23,13 @@ const props = defineProps({
     }
   }
 })
+
+// Force re-render trigger for replaying animations
+const animKey = ref(0)
+
+watch(() => props.player, () => {
+  animKey.value++
+}, { immediate: true })
 
 const avatarError = ref(false)
 const rankError = ref(false)
@@ -41,44 +48,51 @@ const playerName = props.player?.name
 </script>
 
 <template>
-  <BaseCard v-if="player && player.name" class="player-header">
-    <div class="player-header__content">
-      <div class="player-header__avatar">
-        <img
-          v-if="avatarUrl && !avatarError"
-          :src="avatarUrl"
-          :alt="`${playerName} avatar`"
-          class="player-header__avatar-img"
-          @error="handleAvatarError"
-        />
-        <div v-else class="player-header__avatar-placeholder">
-          <span class="player-header__avatar-initials">
-            {{ playerName?.charAt(0)?.toUpperCase() || '?' }}
-          </span>
+  <Transition
+    name="card-appear"
+    :key="animKey"
+    appear
+  >
+    <BaseCard v-if="player && player.name" class="player-header">
+      <div class="player-header__content">
+        <div class="player-header__avatar">
+          <img
+            v-if="avatarUrl && !avatarError"
+            :src="avatarUrl"
+            :alt="`${playerName} avatar`"
+            class="player-header__avatar-img"
+            @error="handleAvatarError"
+          />
+          <div v-else class="player-header__avatar-placeholder">
+            <span class="player-header__avatar-initials">
+              {{ playerName?.charAt(0)?.toUpperCase() || '?' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="player-header__info">
+          <h2 class="player-header__name">{{ playerName }}</h2>
+        </div>
+
+        <div class="player-header__rank">
+          <img
+            v-if="rankIconUrl && !rankError"
+            :src="rankIconUrl"
+            alt="Rank"
+            class="player-header__rank-icon"
+            @error="handleRankError"
+          />
+          <div v-else class="player-header__rank-placeholder">
+            <span class="player-header__rank-text">Unranked</span>
+          </div>
         </div>
       </div>
-
-      <div class="player-header__info">
-        <h2 class="player-header__name">{{ playerName }}</h2>
-      </div>
-
-      <div class="player-header__rank">
-        <img
-          v-if="rankIconUrl && !rankError"
-          :src="rankIconUrl"
-          alt="Rank"
-          class="player-header__rank-icon"
-          @error="handleRankError"
-        />
-        <div v-else class="player-header__rank-placeholder">
-          <span class="player-header__rank-text">Unranked</span>
-        </div>
-      </div>
-    </div>
-  </BaseCard>
+    </BaseCard>
+  </Transition>
 </template>
 
 <style scoped>
+@import '@/style/transitions.css';
 .player-header {
   width: 100%;
 }
