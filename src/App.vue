@@ -5,10 +5,12 @@ import BaseButton from '@/components/ui/BaseButton.vue'
 import BaseInput from '@/components/ui/BaseInput.vue'
 import PlatformSelect from '@/components/search/PlatformSelect.vue'
 import SearchInput from '@/components/search/SearchInput.vue'
+import SearchButton from '@/components/search/SearchButton.vue'
 
 // Simple state for testing components
 const username = ref('')
 const platform = ref('origin')
+const searchLoading = ref(false)
 
 function handleClick() {
   console.log('Button clicked! Username:', username.value)
@@ -20,6 +22,10 @@ function handlePlatformChange(value) {
 
 function handleSubmit() {
   console.log('Search submitted for:', username.value, 'on', platform.value)
+  searchLoading.value = true
+  setTimeout(() => {
+    searchLoading.value = false
+  }, 2000)
 }
 </script>
 
@@ -63,7 +69,7 @@ function handleSubmit() {
         </div>
 
         <div class="demo-section">
-          <h3>SearchInput + PlatformSelect</h3>
+          <h3>SearchInput + PlatformSelect + SearchButton</h3>
           <div class="search-form">
             <SearchInput
               v-model="username"
@@ -71,6 +77,9 @@ function handleSubmit() {
               @submit="handleSubmit"
             />
             <PlatformSelect v-model="platform" />
+            <SearchButton :loading="searchLoading" @click="handleSubmit">
+              Search
+            </SearchButton>
           </div>
         </div>
 
