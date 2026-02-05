@@ -65,7 +65,9 @@ function handleClick(e) {
   border-radius: var(--radius-md);
   transition: all var(--transition-fast);
   cursor: pointer;
-  min-height: 42px;
+  min-height: 48px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   position: relative;
 }
 
@@ -132,5 +134,13 @@ function handleClick(e) {
 .base-button__content {
   display: inline-flex;
   align-items: center;
+}
+
+/* Mobile responsiveness - full-width buttons for easy tapping */
+@media (max-width: 768px) {
+  .base-button {
+    width: 100%;
+    min-height: 48px; /* Exceeds WCAG 44px minimum */
+  }
 }
 </style>

@@ -90,12 +90,12 @@ function handleBlur(event) {
   padding: var(--spacing-sm) var(--spacing-md);
   font-size: 1rem;
   font-weight: 500;
-  background-color: var(--bg-card);
+  background-color: var(--bg-darker);
   color: var(--text-primary);
-  border: 1px solid var(--border);
+  border: 2px solid var(--accent-primary);
   border-radius: var(--radius-md);
   transition: all var(--transition-fast);
-  min-height: 42px;
+  min-height: 48px;
 }
 
 .search-input__field::placeholder {
@@ -116,5 +116,12 @@ function handleBlur(event) {
 .search-input__field:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+/* Mobile responsiveness - ensure touch target meets WCAG 44px minimum */
+@media (max-width: 768px) {
+  .search-input__field {
+    min-height: 48px; /* Exceeds WCAG 44px minimum */
+  }
 }
 </style>

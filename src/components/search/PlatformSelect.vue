@@ -103,18 +103,20 @@ function handleKeydown(event, index) {
   padding: var(--spacing-sm) var(--spacing-md);
   font-size: 0.875rem;
   font-weight: 500;
-  background-color: var(--bg-card);
-  color: var(--text-secondary);
-  border: 1px solid var(--border);
+  background-color: var(--bg-darker);
+  color: var(--text-primary);
+  border: 2px solid var(--border);
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all var(--transition-fast);
-  min-height: 42px;
+  min-height: 48px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .platform-button:hover {
-  background-color: var(--border-light);
-  border-color: var(--border-light);
+  background-color: var(--bg-card);
+  border-color: var(--accent-primary);
 }
 
 .platform-button:focus-visible {
@@ -126,11 +128,13 @@ function handleKeydown(event, index) {
   background-color: var(--accent-primary);
   border-color: var(--accent-primary);
   color: var(--text-primary);
+  box-shadow: 0 0 0 2px rgba(60, 135, 114, 0.2);
 }
 
 .platform-button--active:hover {
   background-color: var(--accent-primary-hover);
   border-color: var(--accent-primary-hover);
+  box-shadow: 0 0 0 2px rgba(60, 135, 114, 0.3);
 }
 
 .platform-button__icon {
@@ -148,5 +152,13 @@ function handleKeydown(event, index) {
 
 .platform-button__name {
   line-height: 1;
+}
+
+/* Mobile responsiveness - ensure touch targets meet WCAG 44px minimum */
+@media (max-width: 768px) {
+  .platform-button {
+    min-height: 48px; /* Exceeds WCAG 44px minimum */
+    flex: 1; /* Equal width buttons on mobile */
+  }
 }
 </style>
