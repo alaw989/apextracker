@@ -9,8 +9,9 @@
  * @props {boolean} isFavorite - Whether this is the top legend (most kills)
  */
 
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import BaseCard from '@/components/ui/BaseCard.vue'
+import LazyImage from '@/components/ui/LazyImage.vue'
 
 const props = defineProps({
   legend: {
@@ -26,12 +27,6 @@ const props = defineProps({
   }
 })
 
-const imageError = ref(false)
-
-function handleImageError() {
-  imageError.value = true
-}
-
 const legendName = computed(() => props.legend?.name || 'Unknown')
 const imageUrl = computed(() => props.legend?.imageUrl)
 const killsCount = computed(() => props.legend?.kills || 0)
@@ -45,12 +40,11 @@ const showFavoriteBadge = computed(() => props.isFavorite === true)
   >
     <div class="legend-card__content">
       <div class="legend-card__image-container">
-        <img
-          v-if="imageUrl && !imageError"
+        <LazyImage
+          v-if="imageUrl"
           :src="imageUrl"
           :alt="`${legendName} legend art`"
           class="legend-card__image"
-          @error="handleImageError"
         />
         <div v-else class="legend-card__image-placeholder">
           <span class="legend-card__placeholder-text">{{ legendName.charAt(0) }}</span>
