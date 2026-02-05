@@ -8,8 +8,9 @@
  * @props {string} player.rankIcon - Rank icon image URL
  */
 
-import { ref, computed, watch } from 'vue'
+import { computed, watch } from 'vue'
 import BaseCard from '@/components/ui/BaseCard.vue'
+import LazyImage from '@/components/ui/LazyImage.vue'
 
 const props = defineProps({
   player: {
@@ -35,17 +36,6 @@ watch(() => props.player, () => {
   animKey.value++
 }, { immediate: true })
 
-const avatarError = ref(false)
-const rankError = ref(false)
-
-function handleAvatarError() {
-  avatarError.value = true
-}
-
-function handleRankError() {
-  rankError.value = true
-}
-
 const avatarUrl = props.player?.avatar
 const rankIconUrl = props.player?.rankIcon
 const playerName = props.player?.name
@@ -60,13 +50,11 @@ const playerName = props.player?.name
     <BaseCard v-if="player && player.name" class="player-header">
       <div class="player-header__content">
         <div class="player-header__avatar">
-          <img
-            v-if="avatarUrl && !avatarError"
+          <LazyImage
+            v-if="avatarUrl"
             :src="avatarUrl"
             :alt="`${playerName} avatar`"
             class="player-header__avatar-img"
-            itemprop="image"
-            @error="handleAvatarError"
           />
           <div v-else class="player-header__avatar-placeholder">
             <span class="player-header__avatar-initials">
@@ -80,12 +68,11 @@ const playerName = props.player?.name
         </div>
 
         <div class="player-header__rank">
-          <img
-            v-if="rankIconUrl && !rankError"
+          <LazyImage
+            v-if="rankIconUrl"
             :src="rankIconUrl"
             :alt="`${playerRankName} rank icon`"
             class="player-header__rank-icon"
-            @error="handleRankError"
           />
           <div v-else class="player-header__rank-placeholder">
             <span class="player-header__rank-text">Unranked</span>
