@@ -19,14 +19,20 @@ export const PLATFORMS = [
  * API Configuration
  * Contains all settings for apexlegendsapi.com (mozambiquehe.re) integration.
  *
- * Supports CORS directly (Access-Control-Allow-Origin: *), so no dev/prod
- * proxy is needed - the browser can call BASE_URL directly in both modes.
+ * Despite advertising Access-Control-Allow-Origin: * on some responses, the
+ * API's Cloudflare WAF reliably blocks real browser fetch() requests with a
+ * 406 and no CORS header (confirmed via live testing). Server-side requests
+ * work fine, so dev routes through Vite's proxy (see vite.config.js) -
+ * production will need an equivalent server-side proxy before this can be
+ * deployed for real users.
  */
 export const API_CONFIG = {
   // API key for apexlegendsapi.com - set VITE_APEX_API_KEY in .env.local
   API_KEY: import.meta.env.VITE_APEX_API_KEY,
 
-  BASE_URL: 'https://api.mozambiquehe.re/bridge'
+  BASE_URL: import.meta.env?.DEV
+    ? '/api/bridge'
+    : 'https://api.mozambiquehe.re/bridge'
 };
 
 /**

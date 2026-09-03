@@ -33,7 +33,7 @@
                             │ fetch()
 ┌─────────────────────────────────────────────────────────────┐
 │                   apexlegendsapi.com                          │
-│      (direct browser call - CORS open, no proxy needed)       │
+│   (via Vite dev proxy - real browser CORS is blocked by WAF)  │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -57,7 +57,7 @@
 
 1. **User Input** → `SearchInput` + `PlatformSelect` capture username + platform (`PC`/`X1`/`PS4`/`SWITCH`)
 2. **Store Action** → `playerStore.searchPlayer()` checks localStorage cache first (stale-while-revalidate), then calls `fetchPlayerStats()` in `api.js`
-3. **API Call** → direct `fetch()` to `https://api.mozambiquehe.re/bridge?player=...&platform=...&auth=...&merge=true` (no proxy - the API sends `Access-Control-Allow-Origin: *`)
+3. **API Call** → `fetch()` to `/api/bridge?player=...&platform=...&auth=...&merge=true`, proxied by Vite's dev server to `https://api.mozambiquehe.re/bridge` (a direct browser call gets blocked by the API's WAF despite its `Access-Control-Allow-Origin: *` header - see INTEGRATIONS.md)
 4. **Transform** → `player.js`'s `transformApiData()` reshapes the raw response (`global`, `legends`, `total`) into `{ name, avatar, rankIcon, stats, legends }`, sorting legends by kills and taking the top 2
 5. **Render** → `PlayerView.vue` reads reactive store state via `storeToRefs`
 
@@ -75,4 +75,4 @@ Pinia setup-store syntax (Composition API) throughout, not the options-store sty
 
 ## Build
 
-Vite 6, esbuild minification, manual chunk splitting (`vue-vendor` for vue/pinia/vue-router, `vueuse` separate, `vendor` catch-all - currently empty since no other node_modules deps ship to the client). Target `es2015`. No dev-time proxy is configured (removed along with Tracker.gg - see INTEGRATIONS.md).
+Vite 6, esbuild minification, manual chunk splitting (`vue-vendor` for vue/pinia/vue-router, `vueuse` separate, `vendor` catch-all - currently empty since no other node_modules deps ship to the client). Target `es2015`. Dev-time proxy (`/api` → `api.mozambiquehe.re`) is required for the app to fetch data at all - see INTEGRATIONS.md.
