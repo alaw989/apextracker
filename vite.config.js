@@ -34,21 +34,8 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  server: {
-    proxy: {
-      // apexlegendsapi.com advertises Access-Control-Allow-Origin: * on some
-      // responses, but its Cloudflare-fronted WAF reliably blocks real
-      // browser fetch() requests (Origin/Sec-Fetch headers present) with a
-      // 406 and no CORS header - confirmed via live testing, not just docs.
-      // Server-side requests (no Origin header) work reliably, so proxy
-      // through Vite's dev server to sidestep the browser fingerprint.
-      '/api': {
-        target: 'https://api.mozambiquehe.re',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
-    }
-  },
+  // No dev proxy needed - apexlegendsapi.com sends
+  // Access-Control-Allow-Origin: * and can be called directly.
   build: {
     // Set chunk size warning limit to 150KB (appropriate for Vue apps per web.dev)
     // This prevents bundle bloat and keeps time-to-interactive low

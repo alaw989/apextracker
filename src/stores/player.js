@@ -9,6 +9,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { fetchPlayerStats } from '@/utils/api.js'
 import { useApiCache } from '@/composables/useApiCache.js'
+import { setCache } from '@/utils/cache.js'
 
 export const usePlayerStore = defineStore('player', () => {
   // State
@@ -162,7 +163,7 @@ export const usePlayerStore = defineStore('player', () => {
             // Update cache
             apiCache.cached.value = freshResponse
             apiCache.timestamp.value = cacheTimestamp.value
-            apiCache.setCache(cacheKey, {
+            setCache(cacheKey, {
               data: freshResponse,
               time: cacheTimestamp.value
             })
@@ -180,7 +181,7 @@ export const usePlayerStore = defineStore('player', () => {
       cacheTimestamp.value = Date.now()
       apiCache.cached.value = response
       apiCache.timestamp.value = cacheTimestamp.value
-      apiCache.setCache(cacheKey, {
+      setCache(cacheKey, {
         data: response,
         time: cacheTimestamp.value
       })

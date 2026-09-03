@@ -22,7 +22,7 @@ GET /bridge?player={username}&platform={PC|X1|PS4|SWITCH}&auth={key}&merge=true
 - `legends.all.<LegendName>.ImgAssets.{icon,banner}` - legend artwork URLs
 - 404-equivalent: HTTP 200 with `{"Error": "..."}` body, not a non-2xx status - `api.js` checks `data.Error` explicitly
 
-**CORS: unreliable from real browsers, proxy required.** The API advertises `Access-Control-Allow-Origin: *` on some responses (curl, server-side `fetch`, direct navigation all succeed consistently), but a genuine browser-originated cross-origin `fetch()` - with the `Origin` and `Sec-Fetch-*` headers a real browser always sends - gets rejected with `406 Not Acceptable` and no CORS header at all, via the API's Cloudflare-fronted WAF. Confirmed with an actual user's browser, not just automated testing. Dev now routes through Vite's `server.proxy` (`vite.config.js`, `/api` → `https://api.mozambiquehe.re`) so the real request happens server-side, which reliably works. **Production will need an equivalent server-side proxy before this app can serve real users** - it cannot call the API directly from client-side code.
+**CORS: open, no proxy needed** (`Access-Control-Allow-Origin: *` on real responses). **Caveat that looked like a CORS bug but wasn't:** the API's server uses Apache content negotiation (`mod_negotiation`) and returns `406 Not Acceptable` for requests sending `Accept: application/json` specifically - even though it always responds with JSON regardless of the `Accept` value sent. Because the 406 response lacks a CORS header, the browser reports it as "blocked by CORS policy," which is misleading - the actual fix was simply not sending an `Accept` header in `api.js`'s `fetch()` call, not adding a proxy. (An intermediate fix that added a Vite dev proxy to work around the apparent CORS block was reverted once the real cause was found - don't reintroduce it.)
 
 **Known quirks:**
 - Rate limit (default 5 req/s) sometimes returns HTTP 200 instead of 429 when exceeded - a documented upstream bug. `api.js` checks for 429 but can't fully guard against this variant.
@@ -48,6 +48,6 @@ No code path in the current app references Tracker.gg anymore.
 
 1. User submits username + platform
 2. `playerStore` checks localStorage cache (`useApiCache`, 15-min TTL, stale-while-revalidate)
-3. `fetchPlayerStats()` in `api.js` calls the bridge endpoint via Vite's dev proxy (`/api/bridge` → `api.mozambiquehe.re/bridge`)
+3. `fetchPlayerStats()` in `api.js` calls the bridge endpoint directly from the browser (no `Accept` header - see the 406 caveat above)
 4. `transformApiData()` in `stores/player.js` reshapes the response into `{ name, avatar, rankIcon, stats, legends }`
 5. Result cached to localStorage and rendered

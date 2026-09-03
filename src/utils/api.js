@@ -38,12 +38,11 @@ export async function fetchPlayerStats(username, platform) {
   const url = `${API_CONFIG.BASE_URL}?player=${encodeURIComponent(cleanUsername)}&platform=${platform}&auth=${API_CONFIG.API_KEY}&merge=true`
 
   try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json'
-      }
-    })
+    // No Accept header - this API's server uses Apache content negotiation
+    // (mod_negotiation) and returns 406 Not Acceptable for
+    // "Accept: application/json" specifically, even though it always
+    // responds with JSON regardless of what Accept value is sent.
+    const response = await fetch(url, { method: 'GET' })
 
     // Handle specific HTTP status codes
     if (response.status === 404) {

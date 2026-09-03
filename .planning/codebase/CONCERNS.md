@@ -6,6 +6,8 @@
 
 The React-era findings (hardcoded key, Heroku proxy dependency, global `window` access, magic numbers, empty catch blocks, no routing, no caching) no longer apply - `src-react/` was deleted this session and none of that code is live. Current concerns below are specific to the Vue app.
 
+**Also fixed this session:** `stores/player.js`'s `searchPlayer()` called `apiCache.setCache(...)`, a method that never existed on `useApiCache()`'s returned object - this broke the write-back half of every fresh (non-cached) search with a runtime error, silently, apparently since before this session (not something introduced by the API provider swap). Fixed by importing `setCache` directly from `utils/cache.js`, matching how `useApiCache.js` itself uses it internally. Confirmed working end-to-end via a live browser search after the fix. This was never caught earlier because the app had never actually been run successfully - see also the `useLazyImage.js` syntax error that blocked `npm run dev` entirely, also first found and fixed this session.
+
 ## External Dependency Risk
 
 **Unofficial, no-SLA API** - the app depends entirely on `apexlegendsapi.com` (mozambiquehe.re), a solo-maintained community project with no uptime guarantee and no published commercial-use terms. If it goes down or changes its response shape, the app has no fallback. See INTEGRATIONS.md for the full rationale (Tracker.gg, the previous provider, turned out to require production-use approval that never materialized).
