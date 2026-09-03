@@ -72,9 +72,8 @@ export function useLazyImage(src, options = {}) {
    */
   watch(targetRef, (element) => {
     if (element && checkViewport()) {
-        shouldLoad.value = true
-        stop() // Stop observer since we're loading immediately
-      }
+      shouldLoad.value = true
+      stop() // Stop observer since we're loading immediately
     }
   }, { immediate: true })
 
