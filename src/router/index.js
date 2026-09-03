@@ -68,7 +68,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   // Check if platform param exists and validate it
   if (to.params.platform) {
-    const validPlatforms = getPlatformIds() // ['origin', 'xbl', 'psn']
+    const validPlatforms = getPlatformIds() // ['PC', 'X1', 'PS4', 'SWITCH']
     if (!validPlatforms.includes(to.params.platform)) {
       // Invalid platform - redirect to 404
       next({ name: 'notFound' })

@@ -48,51 +48,46 @@ export const usePlayerStore = defineStore('player', () => {
 
   /**
    * Transform raw API response into app-friendly format
-   * @param {Object} apiResponse - Raw API response from Tracker.gg
+   * @param {Object} apiResponse - Raw API response from apexlegendsapi.com
    * @returns {Object} Transformed player data
    */
   function transformApiData(apiResponse) {
-    if (!apiResponse || !apiResponse.data) {
+    if (!apiResponse || !apiResponse.global) {
       throw new Error('Invalid API response format')
     }
 
-    const segments = apiResponse.data.segments
-    if (!segments || !Array.isArray(segments) || segments.length === 0) {
-      throw new Error('No segments in API response')
-    }
+    const { global, legends: legendsData, total } = apiResponse
 
-    const overview = segments[0]
-
-    // Transform overview stats
-    // Loop through stats, filter for objects with displayName
-    const stats = []
-    for (const prop in overview.stats) {
-      const stat = overview.stats[prop]
-      if (typeof stat === 'object' && stat.displayName) {
-        stats.push({
-          subtitle: stat.displayName,
-          stat: stat.displayValue || stat.value || stat.rankScore?.displayValue || 'N/A'
-        })
-      }
-    }
+    // Overview stats - each entry in `total` is a {name, value} pair
+    const stats = Object.values(total || {})
+      .filter(s => s && typeof s === 'object' && s.name)
+      .map(s => ({
+        subtitle: s.name,
+        stat: s.value ?? 'N/A'
+      }))
 
     // Filter and sort legends by kills (descending), take top 2
-    const legendSegments = segments
-      .filter(s => s.type !== 'overview' && s.stats?.kills?.value !== undefined)
-      .sort((a, b) => b.stats.kills.value - a.stats.kills.value)
+    // Requires merge=true on the API request to get per-legend data for
+    // every legend, not just the currently-equipped one
+    const legends = Object.entries(legendsData?.all || {})
+      .map(([name, info]) => {
+        const killsTracker = (info.data || []).find(t => t.key === 'kills')
+        if (!killsTracker) return null
+        return {
+          name,
+          imageUrl: info.ImgAssets?.icon,
+          kills: killsTracker.value
+        }
+      })
+      .filter(Boolean)
+      .sort((a, b) => b.kills - a.kills)
       .slice(0, 2)
-
-    const legends = legendSegments.map(seg => ({
-      name: seg.metadata.name,
-      imageUrl: seg.metadata.imageUrl,
-      kills: seg.stats.kills.displayValue || seg.stats.kills.value
-    }))
 
     // Extract player info
     return {
-      name: apiResponse.data.platformInfo.platformUserHandle,
-      avatar: apiResponse.data.platformInfo.avatarUrl,
-      rankIcon: overview.stats?.rankScore?.metadata?.iconUrl || '',
+      name: global.name,
+      avatar: global.avatar,
+      rankIcon: global.rank?.rankImg || '',
       stats,
       legends
     }

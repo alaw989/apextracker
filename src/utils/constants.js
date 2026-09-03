@@ -1,8 +1,7 @@
 /**
  * Platform constants for Apex Tracker
  *
- * API v2 uses string slugs (origin, xbl, psn) instead of numeric codes.
- * The old React app used numbers (1, 2, 5) - this is updated to v2 slugs.
+ * apexlegendsapi.com (mozambiquehe.re) uses PC/X1/PS4/SWITCH platform slugs.
  */
 
 /**
@@ -10,27 +9,24 @@
  * Maps UI-friendly names to API slugs and icon identifiers
  */
 export const PLATFORMS = [
-  { id: 'origin', name: 'PC', icon: 'pc' },
-  { id: 'xbl', name: 'Xbox', icon: 'xbox' },
-  { id: 'psn', name: 'PlayStation', icon: 'psn' }
+  { id: 'PC', name: 'PC', icon: 'pc' },
+  { id: 'X1', name: 'Xbox', icon: 'xbox' },
+  { id: 'PS4', name: 'PlayStation', icon: 'psn' },
+  { id: 'SWITCH', name: 'Switch', icon: 'switch' }
 ];
 
 /**
  * API Configuration
- * Contains all settings for Tracker.gg API integration
+ * Contains all settings for apexlegendsapi.com (mozambiquehe.re) integration.
+ *
+ * Supports CORS directly (Access-Control-Allow-Origin: *), so no dev/prod
+ * proxy is needed - the browser can call BASE_URL directly in both modes.
  */
 export const API_CONFIG = {
-  // API key for Tracker.gg (existing key from React app)
-  API_KEY: '***REMOVED***',
+  // API key for apexlegendsapi.com - set VITE_APEX_API_KEY in .env.local
+  API_KEY: import.meta.env.VITE_APEX_API_KEY,
 
-  // Base URL for Apex Legends API v2
-  // During development, use Vite's proxy to bypass CORS
-  BASE_URL: import.meta.env?.DEV
-    ? '/api/v2/apex/standard/profile'
-    : 'https://public-api.tracker.gg/v2/apex/standard/profile',
-
-  // Legacy proxy URL (kept for reference, migrating to DigitalOcean)
-  PROXY_URL: import.meta.env?.VITE_PROXY_URL || 'https://fathomless-mesa-94824.herokuapp.com/'
+  BASE_URL: 'https://api.mozambiquehe.re/bridge'
 };
 
 /**

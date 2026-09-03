@@ -34,27 +34,8 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  server: {
-    proxy: {
-      // Proxy API requests to bypass CORS during development
-      '/api': {
-        target: 'https://public-api.tracker.gg',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-        configure: (proxy, options) => {
-          proxy.on('error', (err, req, res) => {
-            console.log('proxy error', err)
-          })
-          proxy.on('proxyReq', (proxyReq, req, res) => {
-            console.log('proxying:', req.method, req.url, 'to', options.target + proxyReq.path)
-          })
-          proxy.on('proxyRes', (proxyRes, req, res) => {
-            console.log('received:', proxyRes.statusCode, req.url)
-          })
-        }
-      }
-    }
-  },
+  // No dev proxy needed - apexlegendsapi.com sends
+  // Access-Control-Allow-Origin: * and can be called directly.
   build: {
     // Set chunk size warning limit to 150KB (appropriate for Vue apps per web.dev)
     // This prevents bundle bloat and keeps time-to-interactive low

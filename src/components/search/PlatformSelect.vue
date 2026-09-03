@@ -2,22 +2,22 @@
 /**
  * PlatformSelect - Platform selection button group
  *
- * Platform selection component with icon buttons for PC, Xbox, and PlayStation.
+ * Platform selection component with icon buttons for PC, Xbox, PlayStation, and Switch.
  * Uses v-model pattern for two-way binding and supports keyboard navigation.
  *
- * @props {string} modelValue - Currently selected platform ID (origin, xbl, psn)
+ * @props {string} modelValue - Currently selected platform ID (PC, X1, PS4, SWITCH)
  * @emits update:modelValue - Emitted when user selects a platform
  */
 
 import { computed, ref } from 'vue'
-import { PLATFORMS } from '@/utils/constants'
+import { PLATFORMS, getPlatformIds } from '@/utils/constants'
 import { getPlatformIcon } from '@/utils/platformIcons'
 
 const props = defineProps({
   modelValue: {
     type: String,
-    default: 'origin',
-    validator: (value) => ['origin', 'xbl', 'psn'].includes(value)
+    default: () => PLATFORMS[0].id,
+    validator: (value) => getPlatformIds().includes(value)
   }
 })
 

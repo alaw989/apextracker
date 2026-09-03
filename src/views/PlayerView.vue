@@ -47,7 +47,7 @@ const { data, loading, error, cacheTimestamp, isRefreshing } = storeToRefs(playe
 
 // Local search form state for quick new search
 const searchUsername = ref('')
-const searchPlatform = ref('origin')
+const searchPlatform = ref(PLATFORMS[0].id)
 
 /**
  * Computed platform name for Schema.org markup

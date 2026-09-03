@@ -12,6 +12,7 @@ import { storeToRefs } from 'pinia'
 import { usePlayerStore } from '@/stores/player'
 import { useSearchStore } from '@/stores/search'
 import { useUiStore } from '@/stores/ui'
+import { PLATFORMS } from '@/utils/constants'
 import SearchInput from '@/components/search/SearchInput.vue'
 import PlatformSelect from '@/components/search/PlatformSelect.vue'
 import SearchButton from '@/components/search/SearchButton.vue'
@@ -31,7 +32,7 @@ const { searchLoading, error } = storeToRefs(playerStore)
 
 // Local search form state
 const username = ref('')
-const platform = ref('origin')
+const platform = ref(PLATFORMS[0].id)
 
 /**
  * Handle search form submission

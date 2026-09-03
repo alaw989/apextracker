@@ -1,17 +1,17 @@
 /**
  * API Fetch Utilities
  *
- * Handles all communication with the Tracker.gg API via proxy.
+ * Handles all communication with the apexlegendsapi.com (mozambiquehe.re) API.
  * Provides error handling and response validation.
  */
 
-import { API_CONFIG, ERROR_MESSAGES } from './constants.js'
+import { API_CONFIG, ERROR_MESSAGES, getPlatformIds } from './constants.js'
 
 /**
- * Fetch player stats from Tracker.gg API
+ * Fetch player stats from apexlegendsapi.com
  *
  * @param {string} username - Player username to search
- * @param {string} platform - Platform slug (origin, xbl, psn)
+ * @param {string} platform - Platform slug (PC, X1, PS4, SWITCH)
  * @returns {Promise<Object>} Parsed JSON response from API
  * @throws {Error} With descriptive message for various error conditions
  */
@@ -25,7 +25,7 @@ export async function fetchPlayerStats(username, platform) {
     throw new Error(ERROR_MESSAGES.GENERIC_ERROR)
   }
 
-  const validPlatforms = ['origin', 'xbl', 'psn']
+  const validPlatforms = getPlatformIds()
   if (!validPlatforms.includes(platform)) {
     throw new Error(ERROR_MESSAGES.GENERIC_ERROR)
   }
@@ -33,16 +33,14 @@ export async function fetchPlayerStats(username, platform) {
   // Trim username for API call
   const cleanUsername = username.trim()
 
-  // Construct URL: BASE_URL + /platform/username
-  // In development, uses Vite proxy (/api prefix)
-  // In production, uses direct URL (requires CORS proxy on backend)
-  const url = `${API_CONFIG.BASE_URL}/${platform}/${cleanUsername}`
+  // merge=true is required to get per-legend kill trackers for every legend
+  // (without it, only the currently-equipped legend has stat data)
+  const url = `${API_CONFIG.BASE_URL}?player=${encodeURIComponent(cleanUsername)}&platform=${platform}&auth=${API_CONFIG.API_KEY}&merge=true`
 
   try {
     const response = await fetch(url, {
       method: 'GET',
       headers: {
-        'TRN-Api-Key': API_CONFIG.API_KEY,
         'Accept': 'application/json'
       }
     })
@@ -52,6 +50,8 @@ export async function fetchPlayerStats(username, platform) {
       throw new Error(ERROR_MESSAGES.PLAYER_NOT_FOUND)
     }
 
+    // Known upstream quirk: this API sometimes returns 200 instead of 429
+    // when rate-limited - the data.Error check below catches that case too
     if (response.status === 429) {
       throw new Error(ERROR_MESSAGES.RATE_LIMIT)
     }
@@ -66,8 +66,13 @@ export async function fetchPlayerStats(username, platform) {
 
     const data = await response.json()
 
-    // Validate response structure
-    if (!data || !data.data) {
+    // This API reports errors (e.g. player not found) as a 200 response
+    // with an "Error" field rather than a non-2xx status code
+    if (!data || data.Error) {
+      throw new Error(ERROR_MESSAGES.PLAYER_NOT_FOUND)
+    }
+
+    if (!data.global) {
       throw new Error(ERROR_MESSAGES.NETWORK_ERROR)
     }
 
