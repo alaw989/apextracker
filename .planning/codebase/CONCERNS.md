@@ -1,131 +1,37 @@
 # Concerns: Apex Tracker
 
-**Analyzed:** 2026-02-04
+**Analyzed:** 2026-09-03 - supersedes the pre-v1.0 React analysis (all of that was fixed in the Vue rewrite)
 
-## Critical Issues
+## Resolved Since Last Analysis
 
-### Security
+The React-era findings (hardcoded key, Heroku proxy dependency, global `window` access, magic numbers, empty catch blocks, no routing, no caching) no longer apply - `src-react/` was deleted this session and none of that code is live. Current concerns below are specific to the Vue app.
 
-**Hardcoded API Key** - `src/App.js:20`
-```javascript
-myHeaders.append("TRN-Api-Key", "***REMOVED***");
-```
-- API key exposed in client-side code
-- Should use environment variable (`process.env.REACT_APP_API_KEY`)
-- Key may be revoked/abused
+## External Dependency Risk
 
-**CORS Proxy Dependency** - `src/App.js:47`
-- Relies on third-party Heroku app (`fathomless-mesa-94824.herokuapp.com`)
-- No control over proxy uptime/availability
-- Potential security risk (all traffic through unknown proxy)
+**Unofficial, no-SLA API** - the app depends entirely on `apexlegendsapi.com` (mozambiquehe.re), a solo-maintained community project with no uptime guarantee and no published commercial-use terms. If it goes down or changes its response shape, the app has no fallback. See INTEGRATIONS.md for the full rationale (Tracker.gg, the previous provider, turned out to require production-use approval that never materialized).
 
-## Technical Debt
+**Rate-limit quirk** - the API sometimes returns HTTP 200 instead of 429 when rate-limited, which `api.js` can't fully detect.
 
-### Outdated Dependencies
+## No License
 
-| Package | Current | Latest | Status |
-|---------|---------|--------|--------|
-| React | 16.11.0 | 18.x+ | Major versions behind |
-| React DOM | 16.11.0 | 18.x+ | Major versions behind |
-| Bootstrap | 4.3.1 | 5.x+ | Major version behind |
-| styled-components | 4.4.0 | 6.x+ | Major versions behind |
+Public GitHub repo with no `LICENSE` file and no `"license"` field in `package.json` - defaults to all-rights-reserved, which may not be the intent for a public repo.
 
-**Risks:** Security vulnerabilities, missing features, deprecated APIs
+## Minimal Test Coverage
 
-### Code Quality
+Vitest is now configured (added this session) but only 2 smoke-test files exist (`constants.test.js`, `BaseButton.test.js`). No coverage for:
+- `stores/player.js` - the highest-risk file, has the caching/staleness/error-handling logic and the API response transform
+- `utils/api.js` - fetch error handling, status code branches
+- Any other component
 
-**Global Window Access** - `src/App.js:140, 145`
-```javascript
-getData(window.input_search.value);
-```
-- Direct DOM manipulation breaks React patterns
-- Should use `useState` for input value
-- Fragile to DOM structure changes
+## Dead Code
 
-**Magic Numbers** - `src/App.js:159-164`
-```javascript
-index === 1 ? setplatformCode(5)
-  : index === 0 ? setplatformCode(1)
-  : index === 2 ? setplatformCode(2)
-```
-- Platform codes should be constants
-- No mapping between icon index and platform
+`src/components/ui/PlatformIcons.vue`, `WindowsSVG.vue`, `PlaystationSVG.vue`, `XboxSVG.vue` are unreferenced anywhere in the live app (the app actually uses `src/utils/platformIcons.js`'s inline SVG strings instead). Not removed this session - out of scope, but a clear future cleanup candidate similar to `src-react/`.
 
-**Console.log in Production** - Multiple locations
-- Debugging statements left in code
-- Should use proper logging library or remove
+## Minor / Cosmetic
 
-**Commented-out Code** - `src/App.js:134-136`
-```javascript
-// useEffect(() => {
-//   getData();
-// }, []);
-```
-
-### Error Handling
-
-**Generic Error Message** - `src/components/Error.js`
-- No specific error details shown to user
-- Console-only error logging
-- No retry mechanism
-- No distinction between network errors, not found, etc.
-
-**Empty Catch Block** - `src/App.js:127-131`
-```javascript
-.catch(function() {
-  console.log("error");
-  setError("1");
-  setLoading(false);
-});
-```
-
-## Performance
-
-**Unconditional Re-renders** - Animation logic
-- `animateCount` triggers full re-render animation
-- May cause unnecessary DOM updates
-
-**Image Assets**
-- Large legend background images in source
-- No optimization or lazy loading
-- Could use WebP format
-
-## Maintainability
-
-**No Tests**
-- Only default CRA test exists
-- No component tests, integration tests, or E2E tests
-- Risk of regressions during changes
-
-**Mixed Responsibilities**
-- `App.js` is 275 lines with multiple concerns
-- Data fetching, state management, UI, animation all mixed
-
-**No TypeScript**
-- Plain JavaScript with no type checking
-- Props not validated (PropTypes not used)
-- Risk of runtime errors from undefined props
+- Every build generates an empty `vendor` chunk (`vite.config.js`'s `manualChunks` always creates the bucket even though no non-Vue/VueUse `node_modules` code ships to the client anymore).
+- CSS variable naming inconsistency noted in the v1.0 milestone audit (some components use `--color-*` instead of the defined `--text-*`/`--bg-*` variables) - not verified/re-audited this session.
 
 ## Accessibility
 
-**No ARIA Labels** - Platform icons, search button lack labels
-
-**Keyboard Navigation** - Limited keyboard support (only Enter key on input)
-
-**Color Contrast** - Red overlay may have contrast issues
-
-## Architecture Concerns
-
-**Single File State** - All state in `App.js`
-- Difficult to scale
-- No state management library for complex flows
-- Props drilling deeply nested
-
-**No Routing** - Single page only
-- Can't bookmark player profiles
-- Can't share links to specific stats
-
-**Caching**
-- No client-side caching of API responses
-- Every search hits the API
-- Could use localStorage or React Query
+Not re-audited this session; the v1.0 milestone notes claim ARIA labels and keyboard navigation were addressed during the Vue rewrite, but this hasn't been independently re-verified against the current DOM.

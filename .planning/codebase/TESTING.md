@@ -1,67 +1,32 @@
 # Testing: Apex Tracker
 
-**Analyzed:** 2026-02-04
+**Analyzed:** 2026-09-03 - Vitest added this session; supersedes the pre-v1.0 CRA/Jest analysis
 
 ## Test Framework
 
-**Framework:** Create React App default (Jest + React Testing Library)
-**Script:** `npm test`
+**Framework:** Vitest 5, with `@vue/test-utils` for component mounting and `jsdom` as the DOM environment.
+**Config:** `vitest.config.js` (kept separate from `vite.config.js` via `mergeConfig`, so test config doesn't mix with the build's argv-sniffed `visualizer` plugin logic).
+**Scripts:** `npm test` (single run), `npm run test:watch` (watch mode).
+**Convention:** test files live next to the code they test (`constants.test.js` beside `constants.js`), not in a separate `__tests__/` tree.
 
-## Test Coverage
+## Current Coverage
 
-| Component | Test File | Coverage |
-|-----------|-----------|----------|
-| App | `src/App.test.js` | Default CRA test only |
-| All other components | None | No tests |
+| File | Test File | Coverage |
+|------|-----------|----------|
+| `src/utils/constants.js` | `constants.test.js` | `getPlatformById`, `getPlatformIds`, `PLATFORMS` length |
+| `src/components/ui/BaseButton.vue` | `BaseButton.test.js` | slot render, click emit, disabled/loading suppress emit |
+| Everything else | none | - |
 
-## Existing Tests
+8 tests total, all passing (`npm test`).
 
-**App.test.js:** Default CRA placeholder test
-```javascript
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
-  ReactDOM.unmountComponentAtNode(div);
-});
-```
+## Suggested Next Priorities
 
-## Testing Gaps
+1. **`src/stores/player.js`** - highest-value target. Covers `transformApiData()` (the apexlegendsapi.com response → app-shape transform, including the top-2-legends-by-kills sort), the stale-while-revalidate cache flow in `searchPlayer()`/`fetchPlayer()`, and error handling. Use `@pinia/testing`'s `createTestingPinia()`.
+2. **`src/utils/api.js`** - mock `global.fetch` to exercise the 404/429/403 branches and the `data.Error` 200-body-error case.
+3. **`src/composables/useApiCache.js`** - TTL/staleness logic, isolated from the store.
+4. Remaining `ui/`, `search/`, `stats/`, `legends/` components as time allows.
 
-**No tests for:**
-- Component rendering
-- User interactions (search, platform selection)
-- API fetching/mocking
-- Error handling
-- Animation behavior
-- Responsive behavior
-- State changes
+## Mocking Notes
 
-## Recommendations
-
-1. **Add component tests** for:
-   - Input component (platform selection, username entry)
-   - StatCard rendering
-   - FavCard rendering
-   - Error display
-
-2. **Mock API calls** for:
-   - `getData()` function
-   - Error scenarios
-   - Loading states
-
-3. **Test user flows:**
-   - Complete search flow
-   - Platform switching
-   - Error recovery
-
-4. **Consider adding:**
-   - Integration tests for full search flow
-   - Snapshot tests for component output
-   - Accessibility tests (a11y)
-
-## Mocking Strategy
-
-For API testing, mock:
-- `global.fetch` or use MSW (Mock Service Worker)
-- Tracker.gg API responses
-- Error responses
+- Mock `global.fetch` directly (`vi.stubGlobal('fetch', ...)`) rather than a library like MSW, to keep the dependency footprint small - matches the project's existing "few dependencies" style.
+- `useApiCache` reads/writes `localStorage` directly; jsdom provides a working `localStorage` implementation, no mocking needed for that part.

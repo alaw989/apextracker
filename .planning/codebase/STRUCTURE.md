@@ -1,56 +1,41 @@
 # Structure: Apex Tracker
 
-**Analyzed:** 2026-02-04
+**Analyzed:** 2026-09-03 (Vue 3 rewrite - supersedes the pre-v1.0 React analysis)
 
 ## Directory Layout
 
 ```
 apextracker/
 ├── public/
-│   ├── index.html          # HTML template
-│   ├── manifest.json       # PWA manifest
-│   └── favicon.ico
+│   ├── index.html
+│   ├── manifest.json
+│   ├── favicon.ico / favicon.png
+│   ├── backgrounds/default.jpg
+│   └── images/legends/*.png          # Legend character images
 │
 ├── src/
-│   ├── components/         # React components
-│   │   ├── AnimateAll.js
-│   │   ├── Background.js
-│   │   ├── Error.js
-│   │   ├── FavCard.js
-│   │   ├── Input.js
-│   │   ├── InputContainer.js
-│   │   ├── PlatformIcons.js
-│   │   ├── PlaystationSVG.js
-│   │   ├── SearchButton.js
-│   │   ├── Seperator.js
-│   │   ├── StatCard.js
-│   │   ├── UserInfoBlock.js
-│   │   ├── WindowsSVG.js
-│   │   └── XboxSVG.js
+│   ├── components/
+│   │   ├── legends/                  # FavoriteLegends.vue, LegendCard.vue
+│   │   ├── search/                   # SearchInput, PlatformSelect, SearchButton
+│   │   ├── stats/                    # PlayerHeader, StatsList
+│   │   ├── ui/                       # Base* primitives, ErrorMessage, LoadingSpinner, etc.
+│   │   │                             # (also 4 dead/unreferenced files - see CONVENTIONS.md)
+│   │   └── visual/                   # AppBackground.vue
 │   │
-│   ├── images/            # Legend character backgrounds
-│   │   ├── bangalore.png
-│   │   ├── bloodhound.png
-│   │   ├── caustic.png
-│   │   ├── crypto.png
-│   │   ├── gibraltar.png
-│   │   ├── lifeline.png
-│   │   ├── mirage.png
-│   │   ├── octane.png
-│   │   ├── pathfinder.jpg
-│   │   ├── wattson.png
-│   │   └── wraith.png
-│   │
-│   ├── App.js             # Main application component
-│   ├── App.css            # App styles
-│   ├── App.test.js        # App tests
-│   ├── index.js           # Entry point
-│   ├── index.css          # Global styles
-│   ├── serviceWorker.js   # PWA service worker
-│   ├── utils.js           # Shared utilities (icons, backgrounds, helpers)
-│   └── _mixins.js         # Media query breakpoints
+│   ├── composables/                  # useApiCache, useLazyImage, usePageTitle
+│   ├── router/index.js               # Route table + nav guard
+│   ├── stores/                       # player.js, search.js, ui.js (Pinia)
+│   ├── style/                        # base.css, transitions.css, _variables.css
+│   ├── utils/                        # api.js, cache.js, constants.js, backgrounds.js, platformIcons.js
+│   ├── views/                        # HomeView, PlayerView, NotFoundView
+│   ├── App.vue
+│   ├── main.js
+│   └── style.css
 │
-├── package.json           # Dependencies and scripts
+├── .env.example                      # Template for VITE_APEX_API_KEY
+├── vite.config.js
+├── vitest.config.js
+├── package.json
 └── package-lock.json
 ```
 
@@ -58,47 +43,32 @@ apextracker/
 
 | Purpose | Location |
 |---------|----------|
-| Root component | `src/App.js` |
-| Component directory | `src/components/` |
-| Shared utilities | `src/utils.js` |
-| Static images | `src/images/` |
-| Entry point | `src/index.js` |
-| Global styles | `src/index.css` |
-| Media queries | `src/_mixins.js` |
+| Root component | `src/App.vue` |
+| Entry point | `src/main.js` |
+| Routes | `src/router/index.js` |
+| State | `src/stores/` |
+| API integration | `src/utils/api.js`, `src/utils/constants.js` |
+| Shared cache logic | `src/utils/cache.js`, `src/composables/useApiCache.js` |
+| Component library | `src/components/ui/` |
+| Global styles | `src/style.css`, `src/style/` |
 
 ## Naming Conventions
 
-**Files:**
-- Components: PascalCase (`StatCard.js`, `UserInfoBlock.js`)
-- Utilities: camelCase (`utils.js`, `_mixins.js`)
-- Utilities starting with underscore are internal-only
-
-**Components:**
-- Default exports for components
-- Styled components named after file (e.g., `StatCardWrapper`)
-- Props are camelCase (`bgData`, `toggleDisplay`, `rerenderAnimate`)
-
-**Variables:**
-- camelCase for variables (`iconIndex`, `platformCode`)
-- UPPER_CASE for constants (`myHeaders`)
-- Descriptive names: `legendStats`, `playerStats`, `favStats`
-
-## File Organization
-
-**Co-located:** Images with components that use them (legend backgrounds in `src/images/`)
-
-**Separated:** Components in dedicated directory, utilities at root level
+See CONVENTIONS.md for component/composable/store naming patterns.
 
 ## Imports
 
-**Relative paths used throughout:**
-- `./components/ComponentName` for sibling components
-- `./images/filename` for images
-- `../utils.js` for utilities (from components)
+Absolute imports via the `@` alias (`@/utils/constants`, `@/stores/player`), configured in `vite.config.js`'s `resolve.alias`. Relative imports (`./ComponentName.vue`) only for same-directory siblings.
 
 ## Public vs Src
 
 | Directory | Purpose | Build Process |
-|-----------|---------|---------------|
-| `public/` | Static assets, HTML template | Copied as-is |
-| `src/` | Application code, images | Bundled by CRA |
+|-----------|---------|----------------|
+| `public/` | Static assets (legend images, manifest, favicon) | Copied as-is |
+| `src/` | Application code | Bundled/transformed by Vite |
+
+## Not Present
+
+- No `src-react/` (removed - was the pre-v1.0 legacy implementation, fully superseded)
+- No `dist/` tracked in git (build output, gitignored)
+- No backend/server directory - this is a static frontend calling a third-party API directly

@@ -1,132 +1,51 @@
 # Conventions: Apex Tracker
 
-**Analyzed:** 2026-02-04
+**Analyzed:** 2026-09-03 (Vue 3 rewrite - supersedes the pre-v1.0 React analysis)
 
-## Code Style
+## Component Style
 
-**Imports:** Grouped and ordered
-1. React imports first
-2. Third-party libraries
-3. Relative imports (components, utils, assets)
+**`<script setup>`** exclusively - no Options API, no manual `defineComponent`.
 
-Example from `src/App.js`:
-```javascript
-import React, { useState, useEffect } from "react";
-import "./App.css";
-import Background from "./components/Background";
-import Error from "./components/Error";
-// ... more components
-import { backgrounds, compare, icons, bgSwitch } from "./utils.js";
+**Scoped CSS** in every `.vue` file's `<style scoped>` block. No CSS-in-JS, no Tailwind - hand-rolled CSS custom properties defined in `src/style/_variables.css`.
+
+**Naming:**
+- `Base*` prefix for generic/reusable primitives (`BaseButton.vue`, `BaseCard.vue`, `BaseInput.vue`)
+- Feature-named components grouped by directory (`search/`, `stats/`, `legends/`, `ui/`, `visual/`)
+- PascalCase filenames for components, camelCase for `.js` utility/composable files
+
+## Composables
+
+`useX` naming (`useApiCache`, `useLazyImage`, `usePageTitle`), one per file under `src/composables/`, each returning a plain object of refs/computed/methods (not a class).
+
+## State (Pinia)
+
+Setup-store syntax only:
+```js
+export const useXStore = defineStore('x', () => {
+  const state = ref(...)
+  const getter = computed(...)
+  function action() { ... }
+  return { state, getter, action }
+})
 ```
+Domain-named stores (`player`, `search`, `ui`), not one monolithic store.
 
-## Component Patterns
+## Utilities
 
-**Styled Components:** Used for all component styling
-- Component name + "Wrapper" suffix for styled containers
-- Props passed to styled components for dynamic values
-
-Example from `src/components/StatCard.js`:
-```javascript
-const StatCardWrapper = styled.div`
-  .statcard {
-    background-color: #24283c;
-    // ...
-  }
-`;
-```
-
-**Functional Components:** All components are functional (no classes)
-- Hooks for state (`useState`)
-- Destructured props in function signature
-- Default exports
-
-**React Spring:** Used for animations
-- `useSpring` hook for physics-based animations
-- `animated.div` for animated elements
-
-## Naming Patterns
-
-**Components:** PascalCase
-- `StatCard`, `FavCard`, `UserInfoBlock`
-
-**Props:** camelCase
-- `bgData`, `toggleDisplay`, `rerenderAnimate`, `stat`
-
-**State Variables:** camelCase
-- `iconIndex`, `platformCode`, `playerStats`, `favStats`, `legendStats`
-
-**Constants:** UPPER_SNAKE_CASE or camelCase
-- `myHeaders` (Headers object)
-
-**Event Handlers:** camelCase with descriptive names
-- `captureValue`, `captureValue2`, `darkenBackground`, `lightenBackground`, `selectIcon`
+Centralized under `src/utils/`, framework-free (no Vue imports), JSDoc `@param`/`@returns` on every exported function. `constants.js` holds all magic values (platform list, API config, error message strings) - nothing else hardcodes a platform ID or error string.
 
 ## Error Handling
 
-**Try-Catch:** Used in fetch operations
-```javascript
-.catch(function() {
-  console.log("error");
-  setError("1");
-  setLoading(false);
-});
-```
+- `api.js` throws `Error` objects with messages from `ERROR_MESSAGES` (`constants.js`) mapped from HTTP status / API error shape
+- Stores catch and store `error.value` as a string for template display, never let exceptions escape to components
+- `useApiCache`'s stale-while-revalidate silently swallows background-refresh failures, keeping stale cached data visible
 
-**Error State:** String-based ("0" = no error, "1" = error)
+## Testing
 
-**Error Display:** Conditional rendering based on error state
+Test files sit next to the code they test (`constants.test.js` beside `constants.js`, `BaseButton.test.js` beside `BaseButton.vue`), not in a separate `__tests__/` tree. `describe`/`it` from Vitest's globals (`globals: true` in `vitest.config.js`, no explicit import needed but tests currently import them explicitly for clarity).
 
-## CSS Patterns
+## Anti-Patterns / Known Debt
 
-**Styled Components:** Primary styling method
-- Uses template literals
-- Media queries from mixins
-- Nested selectors for child elements
-
-**CSS-in-JS:**
-- Props control dynamic values (`${props => props.bgData}`)
-- Responsive breakpoints via `mq` from `_mixins.js`
-
-**Bootstrap Grid:** Used for layout
-- `col-12`, `col-md-4`, `col-lg-6` etc.
-- `row` wrapper for grid rows
-- `container` for content centering
-
-## Color Palette
-
-| Color | Hex | Usage |
-|-------|-----|-------|
-| Dark background | `#24283c` | Stat cards |
-| Border | `#424761` | Card borders |
-| Red overlay | `rgba(226,59,46, 100%)` | Focus state |
-| Dimmed red | `rgba(170, 47, 43, 80%)` | Default state |
-| Icons | `#CAD0E3` | Platform icons |
-| Text | White (`#fff`) |
-
-## Code Organization
-
-**Single Responsibility:** Each component is a separate file
-- Platform icons split into separate files (XboxSVG.js, PlaystationSVG.js)
-- Reusable components (StatCard, FavCard)
-
-**Utility Functions:** Centralized in `utils.js`
-- `compare` - Sort comparison function
-- `bgSwitch` - Background selector based on legend name
-- `backgrounds` - Image imports object
-- `icons` - Platform icon SVG array
-- `svgs` - Named SVG exports
-
-## Comments
-
-**Minimal:** Very few inline comments
-- Console.log statements for debugging
-- Commented-out code for alternative implementations
-- No JSDoc or function documentation
-
-## Anti-Patterns Observed
-
-1. **Hardcoded API key** in source (`src/App.js:20`)
-2. **Global window access** (`window.input_search.value`)
-3. **Magic numbers** for platform codes (1, 2, 5)
-4. **Nested ternary operators** in `selectIcon` function
-5. **Console.log left in production code**
+1. **Dead code**: `src/components/ui/PlatformIcons.vue`, `WindowsSVG.vue`, `PlaystationSVG.vue`, `XboxSVG.vue` are unreferenced anywhere in the app - the live app uses `src/utils/platformIcons.js` (inline SVG strings) instead. Candidate for deletion, not yet removed.
+2. **CSS variable naming inconsistency** (carried over from v1.0 milestone notes): some components use a `--color-*` prefix instead of the defined `--text-*`/`--bg-*` variables.
+3. Empty `vendor` chunk generated by every build (`vite.config.js`'s `manualChunks` always creates the bucket even though no non-Vue/VueUse `node_modules` code ships to the client anymore) - cosmetic, not a bug.

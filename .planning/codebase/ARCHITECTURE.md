@@ -1,97 +1,78 @@
 # Architecture: Apex Tracker
 
-**Analyzed:** 2026-02-04
+**Analyzed:** 2026-09-03 (Vue 3 rewrite - supersedes the pre-v1.0 React analysis)
 
 ## Pattern
 
-**Architecture Type:** Single Page Application (SPA)
-**Pattern:** Component-based with parent state management
-**Data Flow:** Unidirectional (top-down via props)
+**Architecture Type:** Single Page Application (SPA), no backend
+**Pattern:** Composition API components + Pinia stores for state
+**Data Flow:** Unidirectional - components call store actions, stores fetch/cache and expose reactive state back down
 
 ## Layers
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                      Presentation Layer                       │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │
-│  │  StatCard   │  │   FavCard   │  │UserInfoBlock│          │
-│  └─────────────┘  └─────────────┘  └─────────────┘          │
+│                      Views (route targets)                    │
+│  HomeView (search form)  │  PlayerView (profile)  │ NotFound  │
 └─────────────────────────────────────────────────────────────┘
-                            ▲
-                            │ props
+                            │ uses
 ┌─────────────────────────────────────────────────────────────┐
-│                     Container Layer                           │
-│  ┌─────────────────────────────────────────────────────┐    │
-│  │                      App.js                          │    │
-│  │  - State management (useState)                      │    │
-│  │  - Data fetching (fetch)                            │    │
-│  │  - Data transformation                             │    │
-│  │  - Event handlers                                   │    │
-│  └─────────────────────────────────────────────────────┘    │
+│                        Components                              │
+│  search/  stats/  legends/  ui/  visual/                      │
 └─────────────────────────────────────────────────────────────┘
-                            ▼
+                            │ reads/calls
 ┌─────────────────────────────────────────────────────────────┐
-│                       External APIs                          │
-│  ┌──────────────┐         ┌──────────────┐                 │
-│  │ Tracker.gg   │◄────────│   Heroku     │                 │
-│  │    API       │  Proxy  │   Proxy      │                 │
-│  └──────────────┘         └──────────────┘                 │
+│                     Pinia Stores (state)                       │
+│  player.js (data+cache)  search.js  ui.js                     │
+└─────────────────────────────────────────────────────────────┘
+                            │ calls
+┌─────────────────────────────────────────────────────────────┐
+│              Composables + Utils (framework-free)              │
+│  useApiCache, useLazyImage, usePageTitle │ api.js, cache.js    │
+└─────────────────────────────────────────────────────────────┘
+                            │ fetch()
+┌─────────────────────────────────────────────────────────────┐
+│                   apexlegendsapi.com                          │
+│      (direct browser call - CORS open, no proxy needed)       │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-## Key Components
+## Key Modules
 
-| Component | Location | Responsibility |
-|-----------|----------|-----------------|
-| App.js | `src/App.js` | Main container, state, data fetching |
-| Background | `src/components/Background.js` | Dynamic background based on legend |
-| InputContainer | `src/components/InputContainer.js` | Search input wrapper |
-| Input | `src/components/Input.js` | Username input + platform selection |
-| SearchButton | `src/components/SearchButton.js` | Triggers search |
-| UserInfoBlock | `src/components/UserInfoBlock.js` | Displays player name, rank, avatar |
-| StatCard | `src/components/StatCard.js` | Individual stat display |
-| FavCard | `src/components/FavCard.js` | Favorite legend card |
-| AnimateAll | `src/components/AnimateAll.js` | Animation wrapper |
-| Error | `src/components/Error.js` | Error message display |
+| Module | Location | Responsibility |
+|--------|----------|-----------------|
+| App.vue | `src/App.vue` | Root component - router-view + global chrome |
+| Router | `src/router/index.js` | 3 routes, platform-validating nav guard |
+| player store | `src/stores/player.js` | Fetches, caches, and transforms player data |
+| search store | `src/stores/search.js` | Search form state |
+| ui store | `src/stores/ui.js` | Global error/UI state |
+| useApiCache | `src/composables/useApiCache.js` | Stale-while-revalidate localStorage cache |
+| useLazyImage | `src/composables/useLazyImage.js` | IntersectionObserver-based lazy image loading |
+| usePageTitle | `src/composables/usePageTitle.js` | Dynamic `<title>` per route |
+| api.js | `src/utils/api.js` | Fetch wrapper for apexlegendsapi.com |
+| constants.js | `src/utils/constants.js` | Platform list, API config, error messages |
+| cache.js | `src/utils/cache.js` | Raw localStorage LRU cache (max 10 entries) |
 
 ## Data Flow
 
-1. **User Input** → Input component captures username + platform
-2. **API Call** → `getData()` fetches from Tracker.gg via proxy
-3. **Data Transformation** → Response sorted/filtered for stats and favorites
-4. **State Update** → React state updated with new data
-5. **Re-render** → Components receive new props and animate in
+1. **User Input** → `SearchInput` + `PlatformSelect` capture username + platform (`PC`/`X1`/`PS4`/`SWITCH`)
+2. **Store Action** → `playerStore.searchPlayer()` checks localStorage cache first (stale-while-revalidate), then calls `fetchPlayerStats()` in `api.js`
+3. **API Call** → direct `fetch()` to `https://api.mozambiquehe.re/bridge?player=...&platform=...&auth=...&merge=true` (no proxy - the API sends `Access-Control-Allow-Origin: *`)
+4. **Transform** → `player.js`'s `transformApiData()` reshapes the raw response (`global`, `legends`, `total`) into `{ name, avatar, rankIcon, stats, legends }`, sorting legends by kills and taking the top 2
+5. **Render** → `PlayerView.vue` reads reactive store state via `storeToRefs`
 
 ## State Management
 
-**Location:** All state in `App.js` (useState hooks)
-
-**Key State Variables:**
-- `loading` - API fetch status
-- `platformCode` - Selected platform (1=XBOX, 2=PSN, 5=PC)
-- `data` - Raw API response
-- `playerStats` - Processed overview stats
-- `favStats` - Top 2 legends by kills
-- `legendStats` - User info (name, avatar, rank icon)
-- `error` - Error state (0=none, 1=error)
-- `animate` - Controls animation re-render
-
-## Animation Strategy
-
-- **react-spring** - Physics-based animations for entry effects
-- **AnimateAll** wrapper - Opacity transition for batch re-renders
-- **Conditional animation** - Uses `animateCount` to toggle animation on/off between searches
+Pinia setup-store syntax (Composition API) throughout, not the options-store style. Each store returns `{ state, getters, actions }` from its `defineStore(() => {...})` callback.
 
 ## Entry Points
 
 | Entry | Location | Purpose |
 |-------|----------|---------|
-| `src/index.js` | Application bootstrap | Renders App to DOM |
-| `src/App.js` | Root component | Main application logic |
-| `public/index.html` | HTML template | Root div container |
+| `index.html` | root | Vite entry, mounts `#app` |
+| `src/main.js` | Application bootstrap | Creates Vue app, installs Pinia + router |
+| `src/App.vue` | Root component | `<RouterView>` host |
 
-## Build Order Dependencies
+## Build
 
-1. Bootstrap CSS must load before app (`src/index.js:6`)
-2. `utils.js` exports used by `App.js` (icons, backgrounds, helpers)
-3. All components must be imported before JSX rendering
+Vite 6, esbuild minification, manual chunk splitting (`vue-vendor` for vue/pinia/vue-router, `vueuse` separate, `vendor` catch-all - currently empty since no other node_modules deps ship to the client). Target `es2015`. No dev-time proxy is configured (removed along with Tracker.gg - see INTEGRATIONS.md).
